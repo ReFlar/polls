@@ -8,6 +8,7 @@ reflar-polls:
   forum:
     no_permission: You don't have permission to vote
     poll_ended: This poll has ended
+    days_remaining: "days to vote|{count} days to vote"
     modal:
       min: You must include a minimum of 2 answers
       max: You can have a maximum of 10 answers
