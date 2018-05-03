@@ -636,10 +636,16 @@ System.register('reflar/polls/components/PollVote', ['flarum/extend', 'flarum/Co
                                                 config: function config(element) {
                                                     $(element).tooltip({ placement: 'right' });
                                                 } },
+                                            !_this3.poll.isEnded() ? m(
+                                                'label',
+                                                { className: 'checkbox' },
+                                                voted ? m('input', { onchange: _this3.changeVote.bind(_this3, item.id()), type: 'checkbox', checked: true }) : m('input', { onchange: _this3.changeVote.bind(_this3, item.id()), type: 'checkbox' }),
+                                                m('span', { className: 'checkmark' })
+                                            ) : '',
                                             m('div', { style: '--width: ' + percent + '%', className: 'PollOption-active' }),
                                             m(
                                                 'label',
-                                                { className: 'PollAnswer' },
+                                                { style: !_this3.poll.isEnded() ? "margin-left: 25px" : '', className: 'PollAnswer' },
                                                 m(
                                                     'span',
                                                     null,
@@ -704,6 +710,28 @@ System.register('reflar/polls/components/PollVote', ['flarum/extend', 'flarum/Co
                                 m('div', { className: 'clear' })
                             );
                         }
+                    }
+                }, {
+                    key: 'onError',
+                    value: function onError(el, error) {
+                        el.srcElement.checked = false;
+
+                        app.alerts.show(error.alert);
+                    }
+                }, {
+                    key: 'changeVote',
+                    value: function changeVote(answer, el) {
+                        app.request({
+                            method: 'PATCH',
+                            url: app.forum.attribute('apiUrl') + '/votes/' + answer,
+                            errorHandler: this.onError.bind(this, el),
+                            data: {
+                                option_id: answer,
+                                poll_id: this.poll.id()
+                            }
+                        }).then(function () {
+                            location.reload();
+                        });
                     }
                 }, {
                     key: 'view',

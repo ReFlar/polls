@@ -53,6 +53,10 @@
   vertical-align: 2px;
 }
 
+.CommentPost--Reactions {
+  z-index: 3 !important;
+}
+
 /* PollBar */
 .PollBar {
   background: transparent;
@@ -71,7 +75,7 @@
 
   label {
     position: relative;
-    z-index: 1;
+    z-index: 2;
 
     span {
       padding-left: 15px;
@@ -114,7 +118,6 @@
     left: 0;
     height: 20px;
     width: 20px;
-    background-color: #e8ecef;
     border: 1px solid;
     border-radius: 4px;
 
@@ -122,8 +125,8 @@
       content: "";
       position: absolute;
       display: none;
-      left: 7px;
-      top: 2.5px;
+      left: 6.75px;
+      top: 3px;
       width: 5px;
       height: 10px;
       border: solid black;

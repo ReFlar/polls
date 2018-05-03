@@ -12,16 +12,21 @@
 
 namespace Reflar\Polls\Api\Controllers;
 
+use DateTime;
 use Flarum\Api\Controller\AbstractResourceController;
+use Flarum\Core\Access\AssertPermissionTrait;
+use Flarum\Core\Exception\FloodingException;
 use Flarum\Core\Exception\PermissionDeniedException;
-use Flarum\Core\User;
 use Psr\Http\Message\ServerRequestInterface;
-use Reflar\Polls\Answer;
+use Reflar\Polls\Question;
+use Reflar\Polls\Vote;
 use Reflar\Polls\Api\Serializers\VoteSerializer;
 use Tobscure\JsonApi\Document;
 
 class UpdateVoteController extends AbstractResourceController
 {
+    use AssertPermissionTrait;
+
     /**
      * @var string
      */
@@ -29,27 +34,48 @@ class UpdateVoteController extends AbstractResourceController
 
     /**
      * @param ServerRequestInterface $request
-     * @param Document               $document
+     * @param Document $document
      *
+     * @return mixed|static
+     *
+     * @throws FloodingException
      * @throws PermissionDeniedException
-     *
-     * @return mixed
      */
     protected function data(ServerRequestInterface $request, Document $document)
     {
-        $data = $request->getParsedBody();
-        $updatedAnswer = $data['answer'];
         $actor = $request->getAttribute('actor');
-        $answer = Answer::find(array_get($request->getQueryParams(), 'id'));
 
-        if ($actor->can('edit.polls') || ($actor->id == User::find($data['user_id'])->id && $actor->can('selfEditPolls'))) {
-            $answer->answer = $updatedAnswer;
-            $this->validator->assertValid(['answer' => $updatedAnswer]);
-            $answer->save();
+        $attributes = $request->getParsedBody();
 
-            return $answer;
-        } else {
+        $this->assertCan($actor, 'votePolls');
+
+        $this->assertNotFlooding($actor);
+
+        Vote::where('user_id', $actor->id)->delete();
+
+        if (Question::find($attributes['poll_id'])->isEnded()) {
             throw new PermissionDeniedException();
+        }
+
+        $vote = Vote::build($attributes['poll_id'], $actor->id, $attributes['option_id']);
+
+        $actor->last_vote_time = new DateTime();
+        $actor->save();
+
+        $vote->save();
+
+        return $vote;
+    }
+
+    /**
+     * @param $actor
+     *
+     * @throws FloodingException
+     */
+    public function assertNotFlooding($actor)
+    {
+        if (new DateTime($actor->last_vote_time) >= new DateTime('-10 seconds')) {
+            throw new FloodingException();
         }
     }
 }

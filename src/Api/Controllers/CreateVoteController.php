@@ -58,6 +58,7 @@ class CreateVoteController extends AbstractCreateController
         $vote = Vote::build($attributes['poll_id'], $actor->id, $attributes['option_id']);
 
         $actor->last_vote_time = new DateTime();
+        $actor->save();
 
         $vote->save();
 
@@ -65,7 +66,7 @@ class CreateVoteController extends AbstractCreateController
     }
 
     /**
-     * @param $user
+     * @param $actor
      *
      * @throws FloodingException
      */

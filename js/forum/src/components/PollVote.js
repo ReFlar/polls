@@ -56,8 +56,18 @@ export default class PollVote extends Component {
                                                 $(element).tooltip({placement: 'right'});
                                             }
                                         }>
+                                        {!this.poll.isEnded() ?
+                                            <label className="checkbox">
+                                                {voted ?
+                                                    <input onchange={this.changeVote.bind(this, item.id())} type="checkbox" checked/>
+                                                    :
+                                                    <input onchange={this.changeVote.bind(this, item.id())} type="checkbox"/>
+                                                }
+                                                <span className="checkmark"/>
+                                            </label>
+                                        : ''}
                                         <div style={'--width: ' + percent + '%'} className="PollOption-active"/>
-                                        <label className="PollAnswer"><span>{item.answer()}</span></label>
+                                        <label style={!this.poll.isEnded() ? "margin-left: 25px" : ''} className="PollAnswer"><span>{item.answer()}</span></label>
                                         <label><span className={percent !== 100 ? 'PollPercent PollPercent--option' : 'PollPercent'}>{percent}%</span></label>
                                     </div>
                                 </div>
@@ -94,6 +104,26 @@ export default class PollVote extends Component {
                 </div>
             );
         }
+    }
+
+    onError(el, error) {
+        el.srcElement.checked = false
+
+        app.alerts.show(error.alert)
+    }
+
+    changeVote(answer, el) {
+        app.request({
+            method: 'PATCH',
+            url: app.forum.attribute('apiUrl') + '/votes/' + answer,
+            errorHandler: this.onError.bind(this, el),
+            data: {
+                option_id: answer,
+                poll_id: this.poll.id()
+            }
+        }).then(() => {
+            location.reload()
+        });
     }
 
     view() {

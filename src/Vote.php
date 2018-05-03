@@ -44,10 +44,6 @@ class Vote extends AbstractModel
         'poll_id',
     ];
 
-    public function isExpired() {
-
-    }
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

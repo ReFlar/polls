@@ -66,6 +66,13 @@ class AddApiRoutes
             Controllers\UpdatePollController::class
         );
 
+        // API Route to update a vote
+        $routes->patch(
+            '/votes/{id}',
+            'votes.update',
+            Controllers\UpdateVoteController::class
+        );
+
         // API Route to update a poll end date
         $routes->patch(
             '/endDate/{id}',
