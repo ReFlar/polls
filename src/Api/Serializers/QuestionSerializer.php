@@ -34,9 +34,10 @@ class QuestionSerializer extends AbstractSerializer
     {
         return [
             'discussion_id' => $question->discussion_id,
-            'question' => $question->question,
-            'isEnded' => $question->isEnded(),
-            'endDate' => $question->end_date
+            'question'      => $question->question,
+            'isEnded'       => $question->isEnded(),
+            'endDate'       => $question->end_date,
+            'isPublic'      => (bool)$question->public_poll
         ];
     }
 

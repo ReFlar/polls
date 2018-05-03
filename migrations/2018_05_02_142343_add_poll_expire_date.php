@@ -7,6 +7,7 @@ return [
     'up' => function (Builder $schema) {
         $schema->table('polls', function (Blueprint $table) {
             $table->dateTime('end_date');
+            $table->boolean('public_poll');
         });
         if (!$schema->hasColumn('users', 'last_vote_time')) {
             $schema->table('users', function (Blueprint $table) {
@@ -16,9 +17,6 @@ return [
     },
 
     'down' => function (Builder $schema) {
-        $schema->table('polls', function (Blueprint $table) {
-            $table->dropColumn('end_date');
-        });
         if ($schema->hasColumn('users', 'last_vote_time')) {
             $schema->table('users', function (Blueprint $table) {
                 $table->dropColumn('last_vote_time');

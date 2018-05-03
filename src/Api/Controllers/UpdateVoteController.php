@@ -18,9 +18,9 @@ use Flarum\Core\Access\AssertPermissionTrait;
 use Flarum\Core\Exception\FloodingException;
 use Flarum\Core\Exception\PermissionDeniedException;
 use Psr\Http\Message\ServerRequestInterface;
+use Reflar\Polls\Api\Serializers\VoteSerializer;
 use Reflar\Polls\Question;
 use Reflar\Polls\Vote;
-use Reflar\Polls\Api\Serializers\VoteSerializer;
 use Tobscure\JsonApi\Document;
 
 class UpdateVoteController extends AbstractResourceController
@@ -34,12 +34,12 @@ class UpdateVoteController extends AbstractResourceController
 
     /**
      * @param ServerRequestInterface $request
-     * @param Document $document
-     *
-     * @return mixed|static
+     * @param Document               $document
      *
      * @throws FloodingException
      * @throws PermissionDeniedException
+     *
+     * @return mixed|static
      */
     protected function data(ServerRequestInterface $request, Document $document)
     {

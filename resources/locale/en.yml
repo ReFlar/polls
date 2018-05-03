@@ -8,7 +8,13 @@ reflar-polls:
   forum:
     no_permission: You don't have permission to vote
     poll_ended: This poll has ended
+    public_poll: Public poll: Click to view voters
+    switch: Allow people to see who voted
+    votes_modal:
+      title: Voters
+
     modal:
+      submit: submit
       min: You must include a minimum of 2 answers
       max: You can have a maximum of 10 answers
       include_question: You must include a question

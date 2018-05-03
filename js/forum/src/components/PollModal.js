@@ -2,6 +2,7 @@ import {extend} from 'flarum/extend';
 import Modal from 'flarum/components/Modal';
 import Button from 'flarum/components/Button';
 import DiscussionComposer from 'flarum/components/DiscussionComposer';
+import Switch from 'flarum/componenets/Switch';
 
 export default class PollModal extends Modal {
     init() {
@@ -13,6 +14,7 @@ export default class PollModal extends Modal {
         this.answer[2] = m.prop('');
 
         this.endDate = m.prop();
+        this.publicPoll = m.prop(false);
     }
 
     className() {
@@ -48,8 +50,7 @@ export default class PollModal extends Modal {
         var oDTP1;
 
         $('#dtBox').DateTimePicker({
-            init: function()
-            {
+            init: function () {
                 oDTP1 = this;
             },
             dateTimeFormat: "MM-dd-yyyy HH:mm",
@@ -101,12 +102,17 @@ export default class PollModal extends Modal {
                             <input style="opacity: 1" className="FormControl" type="text" data-field="datetime" value={this.endDate() || app.translator.trans('reflar-polls.forum.modal.date_placeholder')} id="dtInput" data-min={this.getMinDateTime()} readonly/>
                             <div id="dtBox"></div>
                         </fieldset>
+                        {Switch.component({
+                            state: this.publicPoll() || false,
+                            children: app.translator.trans('reflar-polls.forum.modal.switch'),
+                            onchange: this.publicPoll
+                        })}
                         <div className="clear"></div>
                         {
                             Button.component({
                                 type: 'submit',
                                 className: 'Button Button--primary',
-                                children: 'Submit'
+                                children: app.translator.trans('reflar-polls.forum.modal.submit')
                             })
                         }
                     </div>
@@ -132,10 +138,10 @@ export default class PollModal extends Modal {
         extend(DiscussionComposer.prototype, 'data', function (data) {
             data.poll = pollArray;
         });
-            extend(DiscussionComposer.prototype, 'headerItems', function (items) {
-                items.replace('polls', (
-                    <a className="DiscussionComposer-changePoll" onclick={this.addPoll}><span className="PollLabel">{app.translator.trans('reflar-polls.forum.composer_discussion.edit')}</span></a>), 1);
-            });
+        extend(DiscussionComposer.prototype, 'headerItems', function (items) {
+            items.replace('polls', (
+                <a className="DiscussionComposer-changePoll" onclick={this.addPoll}><span className="PollLabel">{app.translator.trans('reflar-polls.forum.composer_discussion.edit')}</span></a>), 1);
+        });
     }
 
     objectSize(obj) {
@@ -151,7 +157,8 @@ export default class PollModal extends Modal {
         let pollArray = {
             question: this.question(),
             answers: {},
-            endDate: this.endDate()
+            endDate: this.endDate(),
+            publicPoll: this.publicPoll()
         };
 
         if (this.question() === '') {

@@ -34,12 +34,12 @@ class CreateVoteController extends AbstractCreateController
 
     /**
      * @param ServerRequestInterface $request
-     * @param Document $document
-     *
-     * @return mixed|static
+     * @param Document               $document
      *
      * @throws FloodingException
      * @throws PermissionDeniedException
+     *
+     * @return mixed|static
      */
     protected function data(ServerRequestInterface $request, Document $document)
     {

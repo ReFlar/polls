@@ -10,10 +10,5 @@ return [
                 $table->integer('poll_id')->unsigned();
             }
         });
-    },
-
-    'down' => function (Builder $schema) {
-        $schema->drop('polls');
-        $schema->drop('poll_votes');
-    },
+    }
 ];
