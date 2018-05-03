@@ -65,7 +65,7 @@ class SavePollToDatabase
                 // Add a poll after the disscusion has been created/saved.
                 $discussion->afterSave(function ($discussion) use ($post, $event) {
                     // Add question to databse
-                    $poll = Question::build($post['question'], $discussion->id, $event->actor->id);
+                    $poll = Question::build($post['question'], $discussion->id, $event->actor->id, new \DateTime($post['endDate']));
                     $poll->save();
 
                     // Add answers to database

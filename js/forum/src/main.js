@@ -38,7 +38,7 @@ app.initializers.add('reflar-polls', app => {
     extend(DiscussionComposer.prototype, 'headerItems', function (items) {
         if (app.session.user.canStartPolls()) {
             items.add('polls', (
-                <a className="DiscussionComposer-poll" onclick={this.addPoll}><span className="TagLabel">{app.translator.trans('reflar-polls.forum.composer_discussion.add_poll')}</span></a>), 1);
+                <a className="DiscussionComposer-poll" onclick={this.addPoll}><span className="PollLabel">{app.translator.trans('reflar-polls.forum.composer_discussion.add_poll')}</span></a>), 1);
         }
     });
 

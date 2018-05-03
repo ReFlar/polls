@@ -7,10 +7,12 @@ reflar-polls:
       self_edit: Allow poll editing
   forum:
     no_permission: You don't have permission to vote
+    poll_ended: This poll has ended
     modal:
       min: You must include a minimum of 2 answers
       max: You can have a maximum of 10 answers
       include_question: You must include a question
+      date_placeholder: Poll end date
       answer_placeholder: Answer
       add: Add an Option
       question_placeholder: Question

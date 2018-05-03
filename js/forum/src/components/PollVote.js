@@ -22,6 +22,8 @@ export default class PollVote extends Component {
                 }).then((data) => {
                     if (data[0] !== undefined) {
                         this.voted(data[0])
+                    } else if (this.poll.isEnded()) {
+                        this.voted(true)
                     }
 
                     m.redraw();
@@ -65,6 +67,8 @@ export default class PollVote extends Component {
                     <div className="clear"/>
                     {!this.user.canVote() ? (
                         <div className="helpText">{app.translator.trans('reflar-polls.forum.no_permission')}</div>
+                    ) : this.poll.isEnded() ? (
+                        <div className="helpText">{app.translator.trans('reflar-polls.forum.poll_ended')}</div>
                     ) : ''}
                     <div className="clear"/>
                 </div>

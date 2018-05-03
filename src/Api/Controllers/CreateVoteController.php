@@ -12,10 +12,14 @@
 
 namespace Reflar\Polls\Api\Controllers;
 
+use DateTime;
 use Flarum\Api\Controller\AbstractCreateController;
 use Flarum\Core\Access\AssertPermissionTrait;
+use Flarum\Core\Exception\FloodingException;
+use Flarum\Core\Exception\PermissionDeniedException;
 use Psr\Http\Message\ServerRequestInterface;
 use Reflar\Polls\Api\Serializers\VoteSerializer;
+use Reflar\Polls\Question;
 use Reflar\Polls\Vote;
 use Tobscure\JsonApi\Document;
 
@@ -30,11 +34,12 @@ class CreateVoteController extends AbstractCreateController
 
     /**
      * @param ServerRequestInterface $request
-     * @param Document               $document
-     *
-     * @throws \Flarum\Core\Exception\PermissionDeniedException
+     * @param Document $document
      *
      * @return mixed|static
+     *
+     * @throws FloodingException
+     * @throws PermissionDeniedException
      */
     protected function data(ServerRequestInterface $request, Document $document)
     {
@@ -42,18 +47,32 @@ class CreateVoteController extends AbstractCreateController
 
         $attributes = array_get($request->getParsedBody(), 'data.attributes', []);
 
-        $oldVote = Vote::where('poll_id', $attributes['poll_id'])->where('user_id', $actor->id)->exists();
+        $this->assertNotFlooding($actor);
 
-        if ($oldVote) {
-            return $oldVote;
+        if (Question::find($attributes['poll_id'])->isEnded()) {
+            throw new PermissionDeniedException();
         }
 
         $this->assertCan($actor, 'votePolls');
 
         $vote = Vote::build($attributes['poll_id'], $actor->id, $attributes['option_id']);
 
+        $actor->last_vote_time = new DateTime();
+
         $vote->save();
 
         return $vote;
+    }
+
+    /**
+     * @param $user
+     *
+     * @throws FloodingException
+     */
+    public function assertNotFlooding($actor)
+    {
+        if (new DateTime($actor->last_vote_time) >= new DateTime('-10 seconds')) {
+            throw new FloodingException();
+        }
     }
 }

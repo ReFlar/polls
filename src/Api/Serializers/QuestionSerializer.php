@@ -26,36 +26,41 @@ class QuestionSerializer extends AbstractSerializer
     protected $type = 'questions';
 
     /**
-     * @param array|object $model
+     * @param array|object $question
      *
      * @return array
      */
-    protected function getDefaultAttributes($model)
+    protected function getDefaultAttributes($question)
     {
-        return $model->toArray();
+        return [
+            'discussion_id' => $question->discussion_id,
+            'question' => $question->question,
+            'isEnded' => $question->isEnded(),
+            'endDate' => $question->end_date
+        ];
     }
 
     /**
-     * @param $model
+     * @param $question
      *
      * @return Relationship
      */
-    public function answers($model)
+    public function answers($question)
     {
         $answers = app(AnswerRepository::class);
 
-        return new Relationship(new Collection($answers->all($model), app(AnswerSerializer::class)));
+        return new Relationship(new Collection($answers->all($question), app(AnswerSerializer::class)));
     }
 
     /**
-     * @param $model
+     * @param $question
      *
      * @return Relationship
      */
-    public function votes($model)
+    public function votes($question)
     {
         $votes = app(VoteRepository::class);
 
-        return new Relationship(new Collection($votes->all($model), app(VoteSerializer::class)));
+        return new Relationship(new Collection($votes->all($question), app(VoteSerializer::class)));
     }
 }

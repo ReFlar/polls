@@ -11,14 +11,53 @@ export default class PollModal extends Modal {
         this.question = m.prop(this.props.question || '');
         this.answer[1] = m.prop('');
         this.answer[2] = m.prop('');
+
+        this.endDate = m.prop();
     }
 
     className() {
         return 'PollDiscussionModal Modal--small';
     }
 
+    getMinDateTime() {
+        var date = new Date()
+
+        var checkTargets = [
+            date.getMonth() + 1,
+            date.getDate(),
+            date.getHours(),
+            date.getMinutes()
+        ];
+
+        checkTargets.forEach((target, i) => {
+            if (target < 10) {
+                checkTargets[i] = "0" + target;
+            }
+        })
+
+        return checkTargets[0] + '-' + checkTargets[1] + '-' + date.getFullYear() + ' ' + checkTargets[2] + ':' + checkTargets[3]
+    }
+
     title() {
         return app.translator.trans('reflar-polls.forum.modal.add_title');
+    }
+
+    config(isInitalized) {
+        if (isInitalized) return;
+
+        var oDTP1;
+
+        $('#dtBox').DateTimePicker({
+            init: function()
+            {
+                oDTP1 = this;
+            },
+            dateTimeFormat: "MM-dd-yyyy HH:mm",
+            minDateTime: this.getMinDateTime(),
+            settingValueOfElement: (value) => {
+                this.endDate(value)
+            }
+        });
     }
 
     content() {
@@ -58,8 +97,11 @@ export default class PollModal extends Modal {
                     <a href="javascript:;" onclick={this.addOption.bind(this)}><span class="TagLabel untagged">{'+ ' + app.translator.trans('reflar-polls.forum.modal.add')}</span></a><br/><br/>
 
                     <div className='Form-group'>
+                        <fieldset style="margin-bottom: 15px" className="Poll-answer-input">
+                            <input style="opacity: 1" className="FormControl" type="text" data-field="datetime" value={this.endDate() || app.translator.trans('reflar-polls.forum.modal.date_placeholder')} id="dtInput" data-min={this.getMinDateTime()} readonly/>
+                            <div id="dtBox"></div>
+                        </fieldset>
                         <div className="clear"></div>
-
                         {
                             Button.component({
                                 type: 'submit',
@@ -90,14 +132,10 @@ export default class PollModal extends Modal {
         extend(DiscussionComposer.prototype, 'data', function (data) {
             data.poll = pollArray;
         });
-
-        // Change the text of add poll button to edit poll
-        if (this.question() !== '') {
             extend(DiscussionComposer.prototype, 'headerItems', function (items) {
                 items.replace('polls', (
-                    <a className="DiscussionComposer-changeTags" onclick={this.addPoll}><span className="TagLabel">{app.translator.trans('reflar-polls.forum.composer_discussion.edit')}</span></a>), 1);
+                    <a className="DiscussionComposer-changePoll" onclick={this.addPoll}><span className="PollLabel">{app.translator.trans('reflar-polls.forum.composer_discussion.edit')}</span></a>), 1);
             });
-        }
     }
 
     objectSize(obj) {
@@ -113,6 +151,7 @@ export default class PollModal extends Modal {
         let pollArray = {
             question: this.question(),
             answers: {},
+            endDate: this.endDate()
         };
 
         if (this.question() === '') {
@@ -123,7 +162,7 @@ export default class PollModal extends Modal {
         // Add answers to PollArray
         Object.keys(this.answer).map((el, i) => {
             var key = (i + 1);
-            pollArray['answers'][key-1] = this.answer[key]()
+            pollArray['answers'][key - 1] = this.answer[key]()
         });
 
         if (this.objectSize(pollArray.answers) < 2) {
