@@ -8,11 +8,12 @@ reflar-polls:
   forum:
     no_permission: You don't have permission to vote
     poll_ended: This poll has ended
+<<<<<<< HEAD
     public_poll: Public poll: Click to view voters
     switch: Allow people to see who voted
     votes_modal:
       title: Voters
-
+    days_remaining: "days to vote|{count} days to vote"
     modal:
       submit: submit
       min: You must include a minimum of 2 answers

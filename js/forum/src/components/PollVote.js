@@ -11,7 +11,8 @@ export default class PollVote extends Component {
         this.poll = this.props.poll;
         this.votes = [];
         this.voted = m.prop(false);
-        this.user = app.session.user
+        this.user = app.session.user;
+        this.daysToVote = (new Date(this.poll.endDate()) - new Date()) / (1000 * 60 * 60 * 24);
 
         this.answers = this.poll ? this.poll.answers() : [];
 
@@ -42,6 +43,7 @@ export default class PollVote extends Component {
     }
 
     voteView() {
+
         if (this.voted() !== false) {
             return (
                 <div>
@@ -95,10 +97,13 @@ export default class PollVote extends Component {
                         <div className="helpText">{app.translator.trans('reflar-polls.forum.no_permission')}</div>
                     ) : this.poll.isEnded() ? (
                         <div className="helpText">{app.translator.trans('reflar-polls.forum.poll_ended')}</div>
-                    ) : ''}
+                    ) : (
+                        <div className="helpText"><i class="icon fa fa-clock-o"></i> {Math.round(this.daysToVote) >= 1 ?  app.translator.transChoice('reflar-polls.forum.days_remaining', Math.round(this.daysToVote), {count: Math.round(this.daysToVote)}) : '' }</div>
+                    )}
                     <div className="clear"/>
                 </div>
             );
+
         } else {
             return (
                 <div>

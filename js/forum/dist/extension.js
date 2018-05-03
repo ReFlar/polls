@@ -595,6 +595,7 @@ System.register('reflar/polls/components/PollVote', ['flarum/extend', 'flarum/co
                         this.votes = [];
                         this.voted = m.prop(false);
                         this.user = app.session.user;
+                        this.daysToVote = (new Date(this.poll.endDate()) - new Date()) / (1000 * 60 * 60 * 24);
 
                         this.answers = this.poll ? this.poll.answers() : [];
 
@@ -701,7 +702,13 @@ System.register('reflar/polls/components/PollVote', ['flarum/extend', 'flarum/co
                                     'div',
                                     { className: 'helpText' },
                                     app.translator.trans('reflar-polls.forum.poll_ended')
-                                ) : '',
+                                ) : m(
+                                    'div',
+                                    { className: 'helpText' },
+                                    m('i', { 'class': 'icon fa fa-clock-o' }),
+                                    ' ',
+                                    Math.round(this.daysToVote) >= 1 ? app.translator.transChoice('reflar-polls.forum.days_remaining', Math.round(this.daysToVote), { count: Math.round(this.daysToVote) }) : ''
+                                ),
                                 m('div', { className: 'clear' })
                             );
                         } else {
