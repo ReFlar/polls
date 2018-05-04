@@ -25,6 +25,9 @@ export default class EditPollModal extends Modal {
     }
 
     getDateTime(date = new Date()) {
+        if (isNaN(date)) {
+            date = new Date()
+        }
         var checkTargets = [
             date.getMonth() + 1,
             date.getDate(),
@@ -38,7 +41,7 @@ export default class EditPollModal extends Modal {
             }
         })
 
-        return checkTargets[0] + '-' + checkTargets[1] + '-' + date.getFullYear() + ' ' + checkTargets[2] + ':' + checkTargets[3]
+        return date.getFullYear() + '-' + checkTargets[0] + '-' + checkTargets[1] +  ' ' + checkTargets[2] + ':' + checkTargets[3]
     }
 
     config(isInitalized) {
@@ -50,7 +53,7 @@ export default class EditPollModal extends Modal {
             init: function () {
                 oDTP1 = this;
             },
-            dateTimeFormat: "MM-dd-yyyy HH:mm",
+            dateTimeFormat: "yyyy-MM-dd HH:mm",
             minDateTime: this.getDateTime(),
             settingValueOfElement: (value) => {
                 this.endDate(value)
@@ -58,7 +61,7 @@ export default class EditPollModal extends Modal {
                     method: 'PATCH',
                     url: app.forum.attribute('apiUrl') + '/endDate/' + this.props.poll.id(),
                     data: {
-                        date: value,
+                        date: new Date(value),
                         user_id: this.pollCreator.id()
                     }
                 });

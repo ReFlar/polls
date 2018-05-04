@@ -55,7 +55,12 @@ class UpdateEndDateController extends AbstractResourceController
         $poll = Question::find(array_get($request->getQueryParams(), 'id'));
 
         if ($actor->can('edit.polls') || $actor->id == (User::find($data['user_id'])->id && $actor->can('selfEditPolls'))) {
-            $poll->end_date = new \DateTime($data['date']);
+            $endDate = new \DateTime($data['date']);
+
+            if ($data['date'] === null) {
+                $endDate = null;
+            }
+            $poll->end_date = $endDate;
             $poll->save();
         } else {
             throw new PermissionDeniedException();

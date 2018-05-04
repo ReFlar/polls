@@ -64,8 +64,15 @@ class SavePollToDatabase
             if (trim($attributes['question']) != '') {
                 // Add a poll after the discussion has been created/saved.
                 $discussion->afterSave(function ($discussion) use ($attributes, $event) {
+
+                    $endDate = new \DateTime($attributes['endDate']);
+
+                    if ($attributes['endDate'] === null) {
+                        $endDate = null;
+                    }
+
                     // Add question to database
-                    $poll = Question::build($attributes['question'], $discussion->id, $event->actor->id, new \DateTime($attributes['endDate']), $attributes['publicPoll']);
+                    $poll = Question::build($attributes['question'], $discussion->id, $event->actor->id, $endDate, $attributes['publicPoll']);
                     $poll->save();
 
                     // Add answers to database

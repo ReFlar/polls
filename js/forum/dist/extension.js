@@ -95,6 +95,9 @@ System.register('reflar/polls/components/EditPollModal', ['flarum/extend', 'flar
                     value: function getDateTime() {
                         var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date();
 
+                        if (isNaN(date)) {
+                            date = new Date();
+                        }
                         var checkTargets = [date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes()];
 
                         checkTargets.forEach(function (target, i) {
@@ -103,7 +106,7 @@ System.register('reflar/polls/components/EditPollModal', ['flarum/extend', 'flar
                             }
                         });
 
-                        return checkTargets[0] + '-' + checkTargets[1] + '-' + date.getFullYear() + ' ' + checkTargets[2] + ':' + checkTargets[3];
+                        return date.getFullYear() + '-' + checkTargets[0] + '-' + checkTargets[1] + ' ' + checkTargets[2] + ':' + checkTargets[3];
                     }
                 }, {
                     key: 'config',
@@ -118,7 +121,7 @@ System.register('reflar/polls/components/EditPollModal', ['flarum/extend', 'flar
                             init: function init() {
                                 oDTP1 = this;
                             },
-                            dateTimeFormat: "MM-dd-yyyy HH:mm",
+                            dateTimeFormat: "yyyy-MM-dd HH:mm",
                             minDateTime: this.getDateTime(),
                             settingValueOfElement: function settingValueOfElement(value) {
                                 _this2.endDate(value);
@@ -126,7 +129,7 @@ System.register('reflar/polls/components/EditPollModal', ['flarum/extend', 'flar
                                     method: 'PATCH',
                                     url: app.forum.attribute('apiUrl') + '/endDate/' + _this2.props.poll.id(),
                                     data: {
-                                        date: value,
+                                        date: new Date(value),
                                         user_id: _this2.pollCreator.id()
                                     }
                                 });
@@ -306,7 +309,7 @@ System.register('reflar/polls/components/EditPollModal', ['flarum/extend', 'flar
 });;
 'use strict';
 
-System.register('reflar/polls/components/PollModal', ['flarum/extend', 'flarum/components/Modal', 'flarum/components/Button', 'flarum/components/DiscussionComposer', 'flarum/componenets/Switch'], function (_export, _context) {
+System.register('reflar/polls/components/PollModal', ['flarum/extend', 'flarum/components/Modal', 'flarum/components/Button', 'flarum/components/DiscussionComposer', 'flarum/components/Switch'], function (_export, _context) {
     "use strict";
 
     var extend, Modal, Button, DiscussionComposer, Switch, PollModal;
@@ -319,8 +322,8 @@ System.register('reflar/polls/components/PollModal', ['flarum/extend', 'flarum/c
             Button = _flarumComponentsButton.default;
         }, function (_flarumComponentsDiscussionComposer) {
             DiscussionComposer = _flarumComponentsDiscussionComposer.default;
-        }, function (_flarumComponenetsSwitch) {
-            Switch = _flarumComponenetsSwitch.default;
+        }, function (_flarumComponentsSwitch) {
+            Switch = _flarumComponentsSwitch.default;
         }],
         execute: function () {
             PollModal = function (_Modal) {
@@ -362,7 +365,7 @@ System.register('reflar/polls/components/PollModal', ['flarum/extend', 'flarum/c
                             }
                         });
 
-                        return checkTargets[0] + '-' + checkTargets[1] + '-' + date.getFullYear() + ' ' + checkTargets[2] + ':' + checkTargets[3];
+                        return date.getFullYear() + '-' + checkTargets[0] + '-' + checkTargets[1] + ' ' + checkTargets[2] + ':' + checkTargets[3];
                     }
                 }, {
                     key: 'title',
@@ -371,10 +374,8 @@ System.register('reflar/polls/components/PollModal', ['flarum/extend', 'flarum/c
                     }
                 }, {
                     key: 'config',
-                    value: function config(isInitalized) {
+                    value: function config() {
                         var _this2 = this;
-
-                        if (isInitalized) return;
 
                         var oDTP1;
 
@@ -382,7 +383,7 @@ System.register('reflar/polls/components/PollModal', ['flarum/extend', 'flarum/c
                             init: function init() {
                                 oDTP1 = this;
                             },
-                            dateTimeFormat: "MM-dd-yyyy HH:mm",
+                            dateTimeFormat: "yyyy-MM-dd HH:mm",
                             minDateTime: this.getMinDateTime(),
                             settingValueOfElement: function settingValueOfElement(value) {
                                 _this2.endDate(value);
@@ -436,17 +437,11 @@ System.register('reflar/polls/components/PollModal', ['flarum/extend', 'flarum/c
                                         m('div', { className: 'clear' })
                                     );
                                 }),
-                                m(
-                                    'a',
-                                    { href: 'javascript:;', onclick: this.addOption.bind(this) },
-                                    m(
-                                        'span',
-                                        { 'class': 'TagLabel untagged' },
-                                        '+ ' + app.translator.trans('reflar-polls.forum.modal.add')
-                                    )
-                                ),
-                                m('br', null),
-                                m('br', null),
+                                Button.component({
+                                    className: 'Button Button--primary PollModal-Button',
+                                    children: app.translator.trans('reflar-polls.forum.modal.add'),
+                                    onclick: this.addOption.bind(this)
+                                }),
                                 m(
                                     'div',
                                     { className: 'Form-group' },
@@ -456,6 +451,7 @@ System.register('reflar/polls/components/PollModal', ['flarum/extend', 'flarum/c
                                         m('input', { style: 'opacity: 1', className: 'FormControl', type: 'text', 'data-field': 'datetime', value: this.endDate() || app.translator.trans('reflar-polls.forum.modal.date_placeholder'), id: 'dtInput', 'data-min': this.getMinDateTime(), readonly: true }),
                                         m('div', { id: 'dtBox' })
                                     ),
+                                    m('div', { className: 'clear' }),
                                     Switch.component({
                                         state: this.publicPoll() || false,
                                         children: app.translator.trans('reflar-polls.forum.modal.switch'),
@@ -464,7 +460,7 @@ System.register('reflar/polls/components/PollModal', ['flarum/extend', 'flarum/c
                                     m('div', { className: 'clear' }),
                                     Button.component({
                                         type: 'submit',
-                                        className: 'Button Button--primary',
+                                        className: 'Button Button--primary PollModal-SubmitButton',
                                         children: app.translator.trans('reflar-polls.forum.modal.submit')
                                     })
                                 )
@@ -523,7 +519,7 @@ System.register('reflar/polls/components/PollModal', ['flarum/extend', 'flarum/c
                         var pollArray = {
                             question: this.question(),
                             answers: {},
-                            endDate: this.endDate(),
+                            endDate: new Date(this.endDate()),
                             publicPoll: this.publicPoll()
                         };
 
@@ -595,7 +591,6 @@ System.register('reflar/polls/components/PollVote', ['flarum/extend', 'flarum/co
                         this.votes = [];
                         this.voted = m.prop(false);
                         this.user = app.session.user;
-                        this.daysToVote = (new Date(this.poll.endDate()) - new Date()) / (1000 * 60 * 60 * 24);
 
                         this.answers = this.poll ? this.poll.answers() : [];
 
@@ -621,7 +616,6 @@ System.register('reflar/polls/components/PollVote', ['flarum/extend', 'flarum/co
                 }, {
                     key: 'showVoters',
                     value: function showVoters() {
-                        console.log('hi');
                         app.modal.show(new ShowVotersModal(this.poll));
                     }
                 }, {
@@ -634,18 +628,10 @@ System.register('reflar/polls/components/PollVote', ['flarum/extend', 'flarum/co
                                 'div',
                                 null,
                                 m(
-                                    'h4',
+                                    'h3',
                                     null,
                                     this.poll.question()
                                 ),
-                                this.poll.isPublic() ? Button.component({
-                                    className: 'Button Button--primary',
-                                    children: app.translator.trans('reflar-polls.forum.public_poll'),
-                                    onclick: function onclick() {
-                                        app.modal.show(new ShowVotersModal(_this3.poll));
-                                    }
-                                }) : '',
-                                m('div', { className: 'clear' }),
                                 this.answers.map(function (item) {
                                     var voted = false;
                                     if (_this3.voted() !== true) {
@@ -664,7 +650,7 @@ System.register('reflar/polls/components/PollVote', ['flarum/extend', 'flarum/co
                                                 config: function config(element) {
                                                     $(element).tooltip({ placement: 'right' });
                                                 } },
-                                            !_this3.poll.isEnded() ? m(
+                                            !_this3.poll.isEnded() && _this3.voted !== true ? m(
                                                 'label',
                                                 { className: 'checkbox' },
                                                 voted ? m('input', { onchange: _this3.changeVote.bind(_this3, item.id()), type: 'checkbox', checked: true }) : m('input', { onchange: _this3.changeVote.bind(_this3, item.id()), type: 'checkbox' }),
@@ -693,22 +679,29 @@ System.register('reflar/polls/components/PollVote', ['flarum/extend', 'flarum/co
                                         )
                                     );
                                 }),
+                                this.poll.isPublic() ? Button.component({
+                                    className: 'Button Button--primary PublicPollButton',
+                                    children: app.translator.trans('reflar-polls.forum.public_poll'),
+                                    onclick: function onclick() {
+                                        app.modal.show(new ShowVotersModal(_this3.poll));
+                                    }
+                                }) : '',
                                 m('div', { className: 'clear' }),
                                 !this.user.canVote() ? m(
                                     'div',
-                                    { className: 'helpText' },
+                                    { className: 'helpText PollInfoText' },
                                     app.translator.trans('reflar-polls.forum.no_permission')
                                 ) : this.poll.isEnded() ? m(
                                     'div',
-                                    { className: 'helpText' },
+                                    { className: 'helpText PollInfoText' },
                                     app.translator.trans('reflar-polls.forum.poll_ended')
-                                ) : m(
+                                ) : !isNaN(new Date(this.poll.endDate())) ? m(
                                     'div',
-                                    { className: 'helpText' },
+                                    { className: 'helpText PollInfoText' },
                                     m('i', { 'class': 'icon fa fa-clock-o' }),
                                     ' ',
-                                    Math.round(this.daysToVote) >= 1 ? app.translator.transChoice('reflar-polls.forum.days_remaining', Math.round(this.daysToVote), { count: Math.round(this.daysToVote) }) : ''
-                                ),
+                                    app.translator.trans('reflar-polls.forum.days_remaining', { time: moment(this.poll.endDate()).fromNow() })
+                                ) : '',
                                 m('div', { className: 'clear' })
                             );
                         } else {
@@ -716,7 +709,7 @@ System.register('reflar/polls/components/PollVote', ['flarum/extend', 'flarum/co
                                 'div',
                                 null,
                                 m(
-                                    'h4',
+                                    'h3',
                                     null,
                                     this.poll.question()
                                 ),
@@ -741,7 +734,25 @@ System.register('reflar/polls/components/PollVote', ['flarum/extend', 'flarum/co
                                         )
                                     );
                                 }),
-                                m('div', { className: 'clear' })
+                                m('div', { className: 'clear' }),
+                                this.poll.isPublic() && app.session.user !== undefined ? Button.component({
+                                    className: 'Button Button--primary PublicPollButton',
+                                    children: app.translator.trans('reflar-polls.forum.public_poll'),
+                                    onclick: function onclick() {
+                                        app.modal.show(new ShowVotersModal(_this3.poll));
+                                    }
+                                }) : '',
+                                this.poll.isEnded() ? m(
+                                    'div',
+                                    { className: 'helpText PollInfoText' },
+                                    app.translator.trans('reflar-polls.forum.poll_ended')
+                                ) : !isNaN(new Date(this.poll.endDate())) ? m(
+                                    'div',
+                                    { className: 'helpText PollInfoText' },
+                                    m('i', { 'class': 'icon fa fa-clock-o' }),
+                                    ' ',
+                                    app.translator.trans('reflar-polls.forum.days_remaining', { time: moment(this.poll.endDate()).fromNow() })
+                                ) : ''
                             );
                         }
                     }
@@ -805,17 +816,21 @@ System.register('reflar/polls/components/PollVote', ['flarum/extend', 'flarum/co
 });;
 'use strict';
 
-System.register('reflar/polls/components/ShowVotersModal', ['flarum/components/Modal', 'flarum/helpers/avatar', 'flarum/helpers/username'], function (_export, _context) {
+System.register('reflar/polls/components/ShowVotersModal', ['flarum/components/Modal', 'flarum/utils/ItemList', 'flarum/helpers/avatar', 'flarum/helpers/username', 'flarum/helpers/listItems'], function (_export, _context) {
     "use strict";
 
-    var Modal, avatar, username, ShowVotersModal;
+    var Modal, ItemList, avatar, username, listItems, ShowVotersModal;
     return {
         setters: [function (_flarumComponentsModal) {
             Modal = _flarumComponentsModal.default;
+        }, function (_flarumUtilsItemList) {
+            ItemList = _flarumUtilsItemList.default;
         }, function (_flarumHelpersAvatar) {
             avatar = _flarumHelpersAvatar.default;
         }, function (_flarumHelpersUsername) {
             username = _flarumHelpersUsername.default;
+        }, function (_flarumHelpersListItems) {
+            listItems = _flarumHelpersListItems.default;
         }],
         execute: function () {
             ShowVotersModal = function (_Modal) {
@@ -827,11 +842,6 @@ System.register('reflar/polls/components/ShowVotersModal', ['flarum/components/M
                 }
 
                 babelHelpers.createClass(ShowVotersModal, [{
-                    key: 'init',
-                    value: function init() {
-                        console.log(this.props);
-                    }
-                }, {
                     key: 'className',
                     value: function className() {
                         return 'Modal--small';
@@ -840,6 +850,28 @@ System.register('reflar/polls/components/ShowVotersModal', ['flarum/components/M
                     key: 'title',
                     value: function title() {
                         return app.translator.trans('reflar-polls.forum.votes_modal.title');
+                    }
+                }, {
+                    key: 'getUsers',
+                    value: function getUsers(answer) {
+                        var items = new ItemList();
+
+                        this.props.votes().map(function (vote) {
+                            var user = app.store.getById('users', vote.user_id());
+
+                            if (parseInt(answer.id()) === vote.option_id()) {
+                                items.add(user.id(), m(
+                                    'a',
+                                    { href: app.route.user(user), config: m.route },
+                                    avatar(user),
+                                    ' ',
+                                    ' ',
+                                    username(user)
+                                ));
+                            }
+                        });
+
+                        return items;
                     }
                 }, {
                     key: 'content',
@@ -857,28 +889,11 @@ System.register('reflar/polls/components/ShowVotersModal', ['flarum/components/M
                                         'div',
                                         null,
                                         m(
-                                            'legend',
+                                            'h3',
                                             null,
-                                            answer.answer()
+                                            answer.answer() + ':'
                                         ),
-                                        _this2.props.votes().forEach(function (vote) {
-                                            return m(
-                                                'div',
-                                                null,
-                                                answer.id() === vote.option_id() ? user = app.store.getById('users', vote.user_id())(m(
-                                                    'li',
-                                                    null,
-                                                    m(
-                                                        'a',
-                                                        { href: app.route.user(user), config: m.route },
-                                                        avatar(user),
-                                                        ' ',
-                                                        ' ',
-                                                        username(user)
-                                                    )
-                                                )) : ''
-                                            );
-                                        })
+                                        listItems(_this2.getUsers(answer).toArray())
                                     );
                                 })
                             )

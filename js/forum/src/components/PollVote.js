@@ -12,7 +12,6 @@ export default class PollVote extends Component {
         this.votes = [];
         this.voted = m.prop(false);
         this.user = app.session.user;
-        this.daysToVote = (new Date(this.poll.endDate()) - new Date()) / (1000 * 60 * 60 * 24);
 
         this.answers = this.poll ? this.poll.answers() : [];
 
@@ -38,7 +37,6 @@ export default class PollVote extends Component {
     }
 
     showVoters() {
-        console.log('hi')
         app.modal.show(new ShowVotersModal(this.poll))
     }
 
@@ -47,16 +45,7 @@ export default class PollVote extends Component {
         if (this.voted() !== false) {
             return (
                 <div>
-                    <h4>{this.poll.question()}</h4>
-                    {this.poll.isPublic() ?
-                        Button.component({
-                            className: 'Button Button--primary',
-                            children: app.translator.trans('reflar-polls.forum.public_poll'),
-                            onclick: () => {
-                                app.modal.show(new ShowVotersModal(this.poll))
-                            }
-                        }) : ''}
-                    <div className="clear"/>
+                    <h3>{this.poll.question()}</h3>
                     {this.answers.map((item) => {
                         let voted = false;
                         if (this.voted() !== true) {
@@ -74,7 +63,7 @@ export default class PollVote extends Component {
                                             $(element).tooltip({placement: 'right'});
                                         }
                                     }>
-                                    {!this.poll.isEnded() ?
+                                    {!this.poll.isEnded() && this.voted !== true ?
                                         <label className="checkbox">
                                             {voted ?
                                                 <input onchange={this.changeVote.bind(this, item.id())} type="checkbox" checked/>
@@ -92,14 +81,24 @@ export default class PollVote extends Component {
                         )
                     })
                     }
+                    {this.poll.isPublic() ?
+                        Button.component({
+                            className: 'Button Button--primary PublicPollButton',
+                            children: app.translator.trans('reflar-polls.forum.public_poll'),
+                            onclick: () => {
+                                app.modal.show(new ShowVotersModal(this.poll))
+                            }
+                        }) : ''}
                     <div className="clear"/>
                     {!this.user.canVote() ? (
-                        <div className="helpText">{app.translator.trans('reflar-polls.forum.no_permission')}</div>
+                        <div className="helpText PollInfoText">{app.translator.trans('reflar-polls.forum.no_permission')}</div>
                     ) : this.poll.isEnded() ? (
-                        <div className="helpText">{app.translator.trans('reflar-polls.forum.poll_ended')}</div>
-                    ) : (
-                        <div className="helpText"><i class="icon fa fa-clock-o"></i> {Math.round(this.daysToVote) >= 1 ?  app.translator.transChoice('reflar-polls.forum.days_remaining', Math.round(this.daysToVote), {count: Math.round(this.daysToVote)}) : '' }</div>
-                    )}
+                        <div className="helpText PollInfoText">{app.translator.trans('reflar-polls.forum.poll_ended')}</div>
+                    ) : !isNaN(new Date(this.poll.endDate())) ? (
+                        <div className="helpText PollInfoText">
+                            <i class="icon fa fa-clock-o"></i> {app.translator.trans('reflar-polls.forum.days_remaining', {time: moment(this.poll.endDate()).fromNow()})}
+                        </div>
+                    ) : ''}
                     <div className="clear"/>
                 </div>
             );
@@ -107,7 +106,7 @@ export default class PollVote extends Component {
         } else {
             return (
                 <div>
-                    <h4>{this.poll.question()}</h4>
+                    <h3>{this.poll.question()}</h3>
                     {
                         this.answers.map((item) => (
                             <div className="PollOption">
@@ -122,6 +121,21 @@ export default class PollVote extends Component {
                         ))
                     }
                     <div className="clear"/>
+                    {this.poll.isPublic() && app.session.user !== undefined ?
+                        Button.component({
+                            className: 'Button Button--primary PublicPollButton',
+                            children: app.translator.trans('reflar-polls.forum.public_poll'),
+                            onclick: () => {
+                                app.modal.show(new ShowVotersModal(this.poll))
+                            }
+                        }) : ''}
+                    {this.poll.isEnded() ? (
+                        <div className="helpText PollInfoText">{app.translator.trans('reflar-polls.forum.poll_ended')}</div>
+                    ) : !isNaN(new Date(this.poll.endDate())) ? (
+                        <div className="helpText PollInfoText">
+                            <i class="icon fa fa-clock-o"></i> {app.translator.trans('reflar-polls.forum.days_remaining', {time: moment(this.poll.endDate()).fromNow()})}
+                        </div>
+                    ) : ''}
                 </div>
             );
         }

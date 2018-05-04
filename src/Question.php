@@ -46,7 +46,8 @@ class Question extends AbstractModel
     ];
 
     public function isEnded() {
-        if (new DateTime() >= new DateTime($this->end_date)) {
+        $endDate = new DateTime($this->end_date);
+        if (new DateTime() > $endDate && $this->end_date !== '0000-00-00 00:00:00') {
             return true;
         } else {
             return false;
@@ -82,10 +83,11 @@ class Question extends AbstractModel
      * @param $discussionId
      * @param $actorId
      * @param $endDate
+     * @param $publicPoll
      *
      * @return static
      */
-    public static function build($questionText, $discussionId, $actorId, $endDate)
+    public static function build($questionText, $discussionId, $actorId, $endDate, $publicPoll)
     {
         $question = new static();
 
@@ -93,6 +95,7 @@ class Question extends AbstractModel
         $question->discussion_id = $discussionId;
         $question->user_id = $actorId;
         $question->end_date = $endDate;
+        $question->public_poll = $publicPoll;
 
         return $question;
     }

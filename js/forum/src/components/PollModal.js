@@ -2,7 +2,7 @@ import {extend} from 'flarum/extend';
 import Modal from 'flarum/components/Modal';
 import Button from 'flarum/components/Button';
 import DiscussionComposer from 'flarum/components/DiscussionComposer';
-import Switch from 'flarum/componenets/Switch';
+import Switch from "flarum/components/Switch";
 
 export default class PollModal extends Modal {
     init() {
@@ -37,23 +37,21 @@ export default class PollModal extends Modal {
             }
         })
 
-        return checkTargets[0] + '-' + checkTargets[1] + '-' + date.getFullYear() + ' ' + checkTargets[2] + ':' + checkTargets[3]
+        return date.getFullYear() + '-' + checkTargets[0] + '-' + checkTargets[1] +  ' ' + checkTargets[2] + ':' + checkTargets[3]
     }
 
     title() {
         return app.translator.trans('reflar-polls.forum.modal.add_title');
     }
 
-    config(isInitalized) {
-        if (isInitalized) return;
-
+    config() {
         var oDTP1;
 
         $('#dtBox').DateTimePicker({
             init: function () {
                 oDTP1 = this;
             },
-            dateTimeFormat: "MM-dd-yyyy HH:mm",
+            dateTimeFormat: "yyyy-MM-dd HH:mm",
             minDateTime: this.getMinDateTime(),
             settingValueOfElement: (value) => {
                 this.endDate(value)
@@ -95,13 +93,18 @@ export default class PollModal extends Modal {
                         ))
                     }
 
-                    <a href="javascript:;" onclick={this.addOption.bind(this)}><span class="TagLabel untagged">{'+ ' + app.translator.trans('reflar-polls.forum.modal.add')}</span></a><br/><br/>
+                    {Button.component({
+                        className: 'Button Button--primary PollModal-Button',
+                        children: app.translator.trans('reflar-polls.forum.modal.add'),
+                        onclick: this.addOption.bind(this)
+                    })}
 
                     <div className='Form-group'>
                         <fieldset style="margin-bottom: 15px" className="Poll-answer-input">
                             <input style="opacity: 1" className="FormControl" type="text" data-field="datetime" value={this.endDate() || app.translator.trans('reflar-polls.forum.modal.date_placeholder')} id="dtInput" data-min={this.getMinDateTime()} readonly/>
                             <div id="dtBox"></div>
                         </fieldset>
+                        <div className="clear"></div>
                         {Switch.component({
                             state: this.publicPoll() || false,
                             children: app.translator.trans('reflar-polls.forum.modal.switch'),
@@ -111,7 +114,7 @@ export default class PollModal extends Modal {
                         {
                             Button.component({
                                 type: 'submit',
-                                className: 'Button Button--primary',
+                                className: 'Button Button--primary PollModal-SubmitButton',
                                 children: app.translator.trans('reflar-polls.forum.modal.submit')
                             })
                         }
@@ -157,7 +160,7 @@ export default class PollModal extends Modal {
         let pollArray = {
             question: this.question(),
             answers: {},
-            endDate: this.endDate(),
+            endDate: new Date(this.endDate()),
             publicPoll: this.publicPoll()
         };
 

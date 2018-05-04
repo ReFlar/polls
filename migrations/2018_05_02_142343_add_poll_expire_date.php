@@ -6,7 +6,7 @@ use Illuminate\Database\Schema\Builder;
 return [
     'up' => function (Builder $schema) {
         $schema->table('polls', function (Blueprint $table) {
-            $table->dateTime('end_date');
+            $table->dateTime('end_date')->nullable();
             $table->boolean('public_poll');
         });
         if (!$schema->hasColumn('users', 'last_vote_time')) {
