@@ -10,5 +10,5 @@ return [
                 $table->integer('poll_id')->unsigned();
             }
         });
-    }
+    },
 ];

@@ -45,7 +45,8 @@ class Question extends AbstractModel
         'discussion_id',
     ];
 
-    public function isEnded() {
+    public function isEnded()
+    {
         $endDate = new DateTime($this->end_date);
         if (new DateTime() > $endDate && $this->end_date !== '0000-00-00 00:00:00') {
             return true;

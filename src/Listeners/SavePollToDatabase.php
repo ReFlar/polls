@@ -64,7 +64,6 @@ class SavePollToDatabase
             if (trim($attributes['question']) != '') {
                 // Add a poll after the discussion has been created/saved.
                 $discussion->afterSave(function ($discussion) use ($attributes, $event) {
-
                     $endDate = new \DateTime($attributes['endDate']);
 
                     if ($attributes['endDate'] === null) {
