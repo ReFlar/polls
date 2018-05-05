@@ -858,12 +858,11 @@ System.register('reflar/polls/components/ShowVotersModal', ['flarum/components/M
                         var items = new ItemList();
                         var counter = 0;
 
-                        this.props.votes().map(function (vote, i) {
+                        this.props.votes().map(function (vote) {
                             var user = app.store.getById('users', vote.user_id());
 
                             if (parseInt(answer.id()) === vote.option_id()) {
                                 counter++;
-                                console.log(counter);
                                 items.add(user.id(), m(
                                     'a',
                                     { href: app.route.user(user), config: m.route },
