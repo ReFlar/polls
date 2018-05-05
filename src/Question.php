@@ -48,7 +48,7 @@ class Question extends AbstractModel
     public function isEnded()
     {
         $endDate = new DateTime($this->end_date);
-        if (new DateTime() > $endDate && $this->end_date !== '0000-00-00 00:00:00') {
+        if (new DateTime() > $endDate && $this->end_date !== '0000-00-00 00:00:00' && $this->end_date !== null) {
             return true;
         } else {
             return false;
