@@ -81,6 +81,7 @@ export default class PollVote extends Component {
                         )
                     })
                     }
+                    <div className="clear"/>
                     {this.poll.isPublic() ?
                         Button.component({
                             className: 'Button Button--primary PublicPollButton',

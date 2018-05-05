@@ -15,16 +15,25 @@ export default class ShowVotersModal extends Modal {
 
     getUsers(answer) {
         const items = new ItemList();
+        var counter = 0;
 
-        this.props.votes().map(vote => {
+        this.props.votes().map((vote, i) => {
             var user = app.store.getById('users', vote.user_id())
 
             if (parseInt(answer.id()) === vote.option_id()) {
+                counter++
+                console.log(counter)
                 items.add(user.id(), (
                     <a href={app.route.user(user)} config={m.route}>
                         {avatar(user)} {' '}
                         {username(user)}
                     </a>
+                ))
+            }
+
+            if (counter === 0) {
+                items.add('none', (
+                    <h4 style="color: #000">{app.translator.trans('reflar-polls.forum.modal.no_voters')}</h4>
                 ))
             }
         })
@@ -38,7 +47,7 @@ export default class ShowVotersModal extends Modal {
                 <ul className="VotesModal-list">
                     {this.props.answers().map(answer => (
                         <div>
-                            <h3>{answer.answer() + ':'}</h3>
+                            <h2>{answer.answer() + ':'}</h2>
                             {listItems(this.getUsers(answer).toArray())}
                         </div>
                     ))}

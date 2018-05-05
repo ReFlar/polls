@@ -679,6 +679,7 @@ System.register('reflar/polls/components/PollVote', ['flarum/extend', 'flarum/co
                                         )
                                     );
                                 }),
+                                m('div', { className: 'clear' }),
                                 this.poll.isPublic() ? Button.component({
                                     className: 'Button Button--primary PublicPollButton',
                                     children: app.translator.trans('reflar-polls.forum.public_poll'),
@@ -855,11 +856,14 @@ System.register('reflar/polls/components/ShowVotersModal', ['flarum/components/M
                     key: 'getUsers',
                     value: function getUsers(answer) {
                         var items = new ItemList();
+                        var counter = 0;
 
-                        this.props.votes().map(function (vote) {
+                        this.props.votes().map(function (vote, i) {
                             var user = app.store.getById('users', vote.user_id());
 
                             if (parseInt(answer.id()) === vote.option_id()) {
+                                counter++;
+                                console.log(counter);
                                 items.add(user.id(), m(
                                     'a',
                                     { href: app.route.user(user), config: m.route },
@@ -867,6 +871,14 @@ System.register('reflar/polls/components/ShowVotersModal', ['flarum/components/M
                                     ' ',
                                     ' ',
                                     username(user)
+                                ));
+                            }
+
+                            if (counter === 0) {
+                                items.add('none', m(
+                                    'h4',
+                                    { style: 'color: #000' },
+                                    app.translator.trans('reflar-polls.forum.modal.no_voters')
                                 ));
                             }
                         });
@@ -889,7 +901,7 @@ System.register('reflar/polls/components/ShowVotersModal', ['flarum/components/M
                                         'div',
                                         null,
                                         m(
-                                            'h3',
+                                            'h2',
                                             null,
                                             answer.answer() + ':'
                                         ),
