@@ -1,7 +1,6 @@
 import {extend} from 'flarum/extend';
 import Button from 'flarum/components/Button';
 import Component from 'flarum/Component';
-import classList from 'flarum/utils/classList';
 import LogInModal from 'flarum/components/LogInModal';
 
 import ShowVotersModal from './ShowVotersModal';
@@ -12,8 +11,11 @@ export default class PollVote extends Component {
         this.votes = [];
         this.voted = m.prop(false);
         this.user = app.session.user;
+        this.answers = []
 
-        this.answers = this.poll ? this.poll.answers() : [];
+        this.poll.answers().forEach(answer => {
+            this.answers[answer.id()] = answer;
+        })
 
         if (this.user !== undefined) {
             if (!this.user.canVote()) {
@@ -40,7 +42,27 @@ export default class PollVote extends Component {
         app.modal.show(new ShowVotersModal(this.poll))
     }
 
-    voteView() {
+    onError(el, error) {
+        el.srcElement.checked = false
+
+        app.alerts.show(error.alert)
+    }
+
+    changeVote(answer, el) {
+        app.request({
+            method: 'PATCH',
+            url: app.forum.attribute('apiUrl') + '/votes/' + answer,
+            errorHandler: this.onError.bind(this, el),
+            data: {
+                option_id: answer,
+                poll_id: this.poll.id()
+            }
+        }).then(() => {
+            location.reload()
+        });
+    }
+
+    view() {
 
         if (this.voted() !== false) {
             return (
@@ -51,7 +73,7 @@ export default class PollVote extends Component {
                         if (this.voted() !== true) {
                             voted = this.voted().option_id() === item.data.attributes.id;
                         }
-                        const percent = item.percent();
+                        let percent = Math.round((item.votes() / this.poll.votes().length) * 100)
                         return (
                             <div className='PollOption PollVoted'>
                                 <div
@@ -113,7 +135,7 @@ export default class PollVote extends Component {
                             <div className="PollOption">
                                 <div className='PollBar'>
                                     <label className="checkbox">
-                                        <input type="checkbox" onchange={this.addVote.bind(this, item.id())}/>
+                                        <input type="checkbox" onchange={this.addVote.bind(this, item)}/>
                                         <span>{item.answer()}</span>
                                         <span className="checkmark"/>
                                     </label>
@@ -142,37 +164,6 @@ export default class PollVote extends Component {
         }
     }
 
-    onError(el, error) {
-        el.srcElement.checked = false
-
-        app.alerts.show(error.alert)
-    }
-
-    changeVote(answer, el) {
-        app.request({
-            method: 'PATCH',
-            url: app.forum.attribute('apiUrl') + '/votes/' + answer,
-            errorHandler: this.onError.bind(this, el),
-            data: {
-                option_id: answer,
-                poll_id: this.poll.id()
-            }
-        }).then(() => {
-            location.reload()
-        });
-    }
-
-    view() {
-        let content = this.voteView();
-
-        return (
-            <div className={classList({
-                voted: this.voted
-            })}>
-                {content}
-            </div>
-        );
-    }
 
     addVote(answer, el) {
         if (this.user === undefined) {
@@ -181,10 +172,14 @@ export default class PollVote extends Component {
         } else {
             app.store.createRecord('votes').save({
                 poll_id: this.poll.id(),
-                option_id: answer
-            }).then(() => {
-                location.reload()
-            })
+                option_id: answer.id()
+            }).then(
+                vote => {
+                    this.answers[answer.id()].data.attributes.votes++;
+                    this.voted(vote);
+                    this.poll.data.relationships.votes.data.push(vote)
+                    m.redraw()
+                })
         }
     }
 }

@@ -88,7 +88,7 @@ export default class EditPollModal extends Modal {
                                     <input className="FormControl"
                                            type="text"
                                            oninput={m.withAttr('value', this.updateAnswer.bind(this, answer))}
-                                           value={answer.data.attributes.answer}
+                                           value={answer.answer()}
                                            placeholder={app.translator.trans('reflar-polls.forum.modal.answer_placeholder') + ' #' + (i + 1)}/>
                                 </fieldset>
                                 {i + 1 >= 3 ?
@@ -130,18 +130,15 @@ export default class EditPollModal extends Modal {
     }
 
     addAnswer(answer) {
+        var data = {
+            answer: this.newAnswer(),
+            poll_id: this.props.poll.id(),
+            user_id: this.pollCreator.id()
+        }
         if (this.answers.length < 10) {
-            app.request({
-                method: 'POST',
-                url: app.forum.attribute('apiUrl') + '/answers',
-                data: {
-                    answer: this.newAnswer(),
-                    poll_id: this.props.poll.id(),
-                    user_id: this.pollCreator.id()
-                }
-            }).then(
-                response => {
-                    this.answers.push(response);
+            app.store.createRecord('answers').save(data).then(
+                answer => {
+                    this.answers.push(answer);
 
                     this.newAnswer('');
                     m.redraw();
@@ -151,6 +148,7 @@ export default class EditPollModal extends Modal {
             alert(app.translator.trans('reflar-polls.forum.modal.max'))
         }
     }
+
 
     removeOption(option) {
         app.request({
@@ -181,10 +179,6 @@ export default class EditPollModal extends Modal {
                 return true;
             }
         })
-    }
-
-    onhide() {
-        location.reload()
     }
 
     updateQuestion(question) {
