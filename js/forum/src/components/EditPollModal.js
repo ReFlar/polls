@@ -129,6 +129,14 @@ export default class EditPollModal extends Modal {
         ];
     }
 
+
+    onhide() {
+        this.props.poll.answers = m.prop(this.answers)
+        this.props.poll.question = this.question
+        this.props.poll.endDate = this.endDate
+        m.redraw.strategy('all')
+    }
+
     addAnswer(answer) {
         var data = {
             answer: this.newAnswer(),

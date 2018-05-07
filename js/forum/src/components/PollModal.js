@@ -80,7 +80,8 @@ export default class PollModal extends Modal {
                                            name={'answer' + (i + 1)}
                                            bidi={this.answer[i + 1]}
                                            placeholder={app.translator.trans('reflar-polls.forum.modal.answer_placeholder') + ' #' + (i + 1)}/>
-                                </fieldset>
+                                <div id="dtBox"></div>
+								</fieldset>
                                 {i + 1 >= 3 ?
                                     Button.component({
                                         type: 'button',

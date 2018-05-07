@@ -17,6 +17,7 @@ use Flarum\Api\Controller\AbstractResourceController;
 use Flarum\Core\Access\AssertPermissionTrait;
 use Flarum\Core\Exception\FloodingException;
 use Flarum\Core\Exception\PermissionDeniedException;
+use Flarum\core\User;
 use Psr\Http\Message\ServerRequestInterface;
 use Reflar\Polls\Api\Serializers\VoteSerializer;
 use Reflar\Polls\Question;
@@ -51,13 +52,15 @@ class UpdateVoteController extends AbstractResourceController
 
         $this->assertNotFlooding($actor);
 
-        Vote::where('user_id', $actor->id)->delete();
-
         if (Question::find($attributes['poll_id'])->isEnded()) {
             throw new PermissionDeniedException();
         }
 
-        $vote = Vote::build($attributes['poll_id'], $actor->id, $attributes['option_id']);
+        $vote = Vote::where('user_id', $actor->id)
+            ->where('poll_id', $attributes['poll_id'])
+            ->first();
+
+        $vote->option_id = $attributes['option_id'];
 
         $actor->last_vote_time = new DateTime();
         $actor->save();

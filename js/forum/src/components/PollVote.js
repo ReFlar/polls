@@ -49,17 +49,35 @@ export default class PollVote extends Component {
     }
 
     changeVote(answer, el) {
+        var oldVoteId = this.voted().id()
+        var oldAnswerId = this.voted().option_id()
         app.request({
             method: 'PATCH',
-            url: app.forum.attribute('apiUrl') + '/votes/' + answer,
+            url: app.forum.attribute('apiUrl') + '/votes/' + answer.id(),
             errorHandler: this.onError.bind(this, el),
             data: {
-                option_id: answer,
+                option_id: answer.id(),
                 poll_id: this.poll.id()
             }
-        }).then(() => {
-            location.reload()
-        });
+        }).then(
+            response => {
+                this.answers[answer.id()].data.attributes.votes++;
+                this.answers[oldAnswerId].data.attributes.votes--;
+                this.poll.data.relationships.votes.data.some(vote => {
+                    if (typeof vote.id === "function") {
+                        var id = vote.id()
+                    } else {
+                        var id = vote.id
+                    }
+                    if (oldVoteId === parseInt(id)) {
+                        vote.option_id = m.prop(response.data.attributes.option_id);
+                        return true;
+                    }
+                })
+                m.redraw.strategy('all')
+                m.redraw()
+            }
+        )
     }
 
     view() {
@@ -71,7 +89,8 @@ export default class PollVote extends Component {
                     {this.answers.map((item) => {
                         let voted = false;
                         if (this.voted() !== true) {
-                            voted = this.voted().option_id() === item.data.attributes.id;
+                            voted = parseInt(this.voted().option_id()) === item.data.attributes.id;
+                            m.redraw()
                         }
                         let percent = Math.round((item.votes() / this.poll.votes().length) * 100)
                         return (
@@ -88,9 +107,9 @@ export default class PollVote extends Component {
                                     {!this.poll.isEnded() && this.voted !== true ?
                                         <label className="checkbox">
                                             {voted ?
-                                                <input onchange={this.changeVote.bind(this, item.id())} type="checkbox" checked/>
+                                                <input onchange={this.changeVote.bind(this, item)} type="checkbox" checked/>
                                                 :
-                                                <input onchange={this.changeVote.bind(this, item.id())} type="checkbox"/>
+                                                <input onchange={this.changeVote.bind(this, item)} type="checkbox"/>
                                             }
                                             <span className="checkmark"/>
                                         </label>
