@@ -17,7 +17,6 @@ use Flarum\Api\Controller\AbstractResourceController;
 use Flarum\Core\Access\AssertPermissionTrait;
 use Flarum\Core\Exception\FloodingException;
 use Flarum\Core\Exception\PermissionDeniedException;
-use Flarum\core\User;
 use Psr\Http\Message\ServerRequestInterface;
 use Reflar\Polls\Api\Serializers\VoteSerializer;
 use Reflar\Polls\Question;

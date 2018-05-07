@@ -183,7 +183,6 @@ export default class PollVote extends Component {
         }
     }
 
-
     addVote(answer, el) {
         if (this.user === undefined) {
             app.modal.show(new LogInModal())
