@@ -14,8 +14,8 @@ namespace Reflar\Polls\Api\Controllers;
 
 use DateTime;
 use Flarum\Api\Controller\AbstractCreateController;
-use Flarum\User\AssertPermissionTrait;
 use Flarum\Post\Exception\FloodingException;
+use Flarum\User\AssertPermissionTrait;
 use Flarum\User\Exception\PermissionDeniedException;
 use Psr\Http\Message\ServerRequestInterface;
 use Reflar\Polls\Api\Serializers\VoteSerializer;

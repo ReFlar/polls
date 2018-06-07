@@ -12,8 +12,8 @@
 
 namespace Reflar\Polls\Listeners;
 
-use Flarum\User\AssertPermissionTrait;
 use Flarum\Discussion\Event\Saving;
+use Flarum\User\AssertPermissionTrait;
 use Illuminate\Contracts\Events\Dispatcher;
 use Reflar\Polls\Answer;
 use Reflar\Polls\Question;
