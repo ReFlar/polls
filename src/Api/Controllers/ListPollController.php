@@ -12,14 +12,14 @@
 
 namespace Reflar\Polls\Api\Controllers;
 
-use Flarum\Api\Controller\AbstractCollectionController;
-use Flarum\Core\Access\AssertPermissionTrait;
+use Flarum\Api\Controller\AbstractListController;
+use Flarum\User\AssertPermissionTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use Reflar\Polls\Api\Serializers\QuestionSerializer;
 use Reflar\Polls\Repositories\QuestionRepository;
 use Tobscure\JsonApi\Document;
 
-class ListPollController extends AbstractCollectionController
+class ListPollController extends AbstractListController
 {
     use AssertPermissionTrait;
 

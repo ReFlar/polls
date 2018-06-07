@@ -13,7 +13,7 @@
 namespace Reflar\Polls\Api\Controllers;
 
 use Flarum\Api\Controller\AbstractDeleteController;
-use Flarum\Core\Exception\PermissionDeniedException;
+use Flarum\User\Exception\PermissionDeniedException;
 use Psr\Http\Message\ServerRequestInterface;
 use Reflar\Polls\Answer;
 use Reflar\Polls\Api\Serializers\AnswerSerializer;

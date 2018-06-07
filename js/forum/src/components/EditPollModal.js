@@ -95,7 +95,7 @@ export default class EditPollModal extends Modal {
                                     Button.component({
                                         type: 'button',
                                         className: 'Button Button--warning Poll-answer-button',
-                                        icon: 'minus',
+                                        icon: 'fa fa-minus',
                                         onclick: i + 1 >= 3 ? this.removeOption.bind(this, answer) : ''
                                     }) : ''}
                                 <div className="clear"></div>
@@ -112,7 +112,7 @@ export default class EditPollModal extends Modal {
                         {Button.component({
                             type: 'button',
                             className: 'Button Button--warning Poll-answer-button',
-                            icon: 'plus',
+                            icon: 'fa fa-plus',
                             onclick: this.addAnswer.bind(this)
                         })}
                     </div>

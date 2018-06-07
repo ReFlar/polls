@@ -95,7 +95,7 @@ export default class PollModal extends Modal {
                                     Button.component({
                                         type: 'button',
                                         className: 'Button Button--warning Poll-answer-button',
-                                        icon: 'minus',
+                                        icon: 'fa fa-minus',
                                         onclick: i + 1 >= 3 ? this.removeOption.bind(this, i) : ''
                                     }) : ''}
                                 <div className="clear"></div>

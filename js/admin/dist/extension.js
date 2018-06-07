@@ -18,26 +18,26 @@ System.register('reflar/polls/main', ['flarum/app', 'flarum/extend', 'flarum/com
             app.initializers.add('reflar-polls', function (app) {
                 extend(PermissionGrid.prototype, 'moderateItems', function (items) {
                     items.add('reflar-polls', {
-                        icon: 'pencil',
+                        icon: 'fa fa-pencil-alt',
                         label: app.translator.trans('reflar-polls.admin.permissions.moderate'),
                         permission: 'discussion.polls'
                     }, 95);
                 });
                 extend(PermissionGrid.prototype, 'startItems', function (items) {
                     items.add('reflar-polls-start', {
-                        icon: 'signal',
+                        icon: 'fa fa-signal',
                         label: app.translator.trans('reflar-polls.admin.permissions.start'),
                         permission: 'startPolls'
                     }, 95);
                 });
                 extend(PermissionGrid.prototype, 'replyItems', function (items) {
                     items.add('reflar-polls-edit', {
-                        icon: 'pencil',
+                        icon: 'fa fa-pencil-alt',
                         label: app.translator.trans('reflar-polls.admin.permissions.self_edit'),
                         permission: 'selfEditPolls'
                     }, 70);
                     items.add('reflar-polls-vote', {
-                        icon: 'signal',
+                        icon: 'fa fa-signal',
                         label: app.translator.trans('reflar-polls.admin.permissions.vote'),
                         permission: 'votePolls'
                     }, 80);
@@ -103,7 +103,10 @@ System.register('reflar/polls/models/Question', ['flarum/Model', 'flarum/utils/m
             }(mixin(Model, {
                 question: Model.attribute('question'),
                 answers: Model.hasMany('answers'),
-                votes: Model.hasMany('votes')
+                votes: Model.hasMany('votes'),
+                isEnded: Model.attribute('isEnded'),
+                endDate: Model.attribute('endDate'),
+                isPublic: Model.attribute('isPublic')
             }));
 
             _export('default', Question);

@@ -23,7 +23,7 @@ System.register('reflar/polls/addPollBadge', ['flarum/extend', 'flarum/models/Di
                 badges.add('poll', Badge.component({
                     type: 'poll',
                     label: app.translator.trans('reflar-polls.forum.tooltip.badge'),
-                    icon: 'signal'
+                    icon: 'fa fa-signal'
                 }), 5);
             }
         });
@@ -177,7 +177,7 @@ System.register('reflar/polls/components/EditPollModal', ['flarum/extend', 'flar
                                         i + 1 >= 3 ? Button.component({
                                             type: 'button',
                                             className: 'Button Button--warning Poll-answer-button',
-                                            icon: 'minus',
+                                            icon: 'fa fa-minus',
                                             onclick: i + 1 >= 3 ? _this3.removeOption.bind(_this3, answer) : ''
                                         }) : '',
                                         m('div', { className: 'clear' })
@@ -197,7 +197,7 @@ System.register('reflar/polls/components/EditPollModal', ['flarum/extend', 'flar
                                     Button.component({
                                         type: 'button',
                                         className: 'Button Button--warning Poll-answer-button',
-                                        icon: 'plus',
+                                        icon: 'fa fa-plus',
                                         onclick: this.addAnswer.bind(this)
                                     })
                                 ),
@@ -453,7 +453,7 @@ System.register('reflar/polls/components/PollModal', ['flarum/extend', 'flarum/c
                                         i + 1 >= 3 ? Button.component({
                                             type: 'button',
                                             className: 'Button Button--warning Poll-answer-button',
-                                            icon: 'minus',
+                                            icon: 'fa fa-minus',
                                             onclick: i + 1 >= 3 ? _this3.removeOption.bind(_this3, i) : ''
                                         }) : '',
                                         m('div', { className: 'clear' })
@@ -1159,7 +1159,7 @@ System.register('reflar/polls/PollControl', ['flarum/extend', 'flarum/utils/Post
             if (discussion.Poll() && (user !== undefined && user.canEditPolls() || post.user().canSelfEditPolls() && post.user().id() === user.id()) && post.number() === 1) {
                 if (!poll.isEnded()) {
                     items.add('editPoll', [m(Button, {
-                        icon: 'check-square',
+                        icon: 'fa fa-check-square',
                         className: 'reflar-PollButton',
                         onclick: function onclick() {
                             app.modal.show(new EditPollModal({ post: post, poll: poll }));
@@ -1168,7 +1168,7 @@ System.register('reflar/polls/PollControl', ['flarum/extend', 'flarum/utils/Post
                 }
 
                 items.add('removePoll', [m(Button, {
-                    icon: 'trash',
+                    icon: 'fa fa-trash',
                     className: 'reflar-PollButton',
                     onclick: function onclick() {
 

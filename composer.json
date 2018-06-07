@@ -29,7 +29,7 @@
         "flarum-extension": {
             "title": "ReFlar Polls",
             "icon": {
-                "name": "signal",
+                "name": "fa fa-signal",
                 "backgroundColor": "#263238",
                 "color": "#ffffff"
             }

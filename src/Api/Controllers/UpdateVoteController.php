@@ -13,17 +13,17 @@
 namespace Reflar\Polls\Api\Controllers;
 
 use DateTime;
-use Flarum\Api\Controller\AbstractResourceController;
-use Flarum\Core\Access\AssertPermissionTrait;
-use Flarum\Core\Exception\FloodingException;
-use Flarum\Core\Exception\PermissionDeniedException;
+use Flarum\Api\Controller\AbstractShowController;
+use Flarum\User\AssertPermissionTrait;
+use Flarum\Post\Exception\FloodingException;
+use Flarum\User\Exception\PermissionDeniedException;
 use Psr\Http\Message\ServerRequestInterface;
 use Reflar\Polls\Api\Serializers\VoteSerializer;
 use Reflar\Polls\Question;
 use Reflar\Polls\Vote;
 use Tobscure\JsonApi\Document;
 
-class UpdateVoteController extends AbstractResourceController
+class UpdateVoteController extends AbstractShowController
 {
     use AssertPermissionTrait;
 

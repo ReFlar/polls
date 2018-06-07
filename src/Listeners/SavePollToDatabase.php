@@ -12,8 +12,8 @@
 
 namespace Reflar\Polls\Listeners;
 
-use Flarum\Core\Access\AssertPermissionTrait;
-use Flarum\Event\DiscussionWillBeSaved;
+use Flarum\User\AssertPermissionTrait;
+use Flarum\Discussion\Event\Saving;
 use Illuminate\Contracts\Events\Dispatcher;
 use Reflar\Polls\Answer;
 use Reflar\Polls\Question;
@@ -43,15 +43,15 @@ class SavePollToDatabase
      */
     public function subscribe(Dispatcher $events)
     {
-        $events->listen(DiscussionWillBeSaved::class, [$this, 'whenDiscussionWillBeSaved']);
+        $events->listen(Saving::class, [$this, 'whenSaving']);
     }
 
     /**
-     * @param DiscussionWillBeSaved $event
+     * @param Saving $event
      *
-     * @throws \Flarum\Core\Exception\PermissionDeniedException
+     * @throws \Flarum\User\Exception\PermissionDeniedException
      */
-    public function whenDiscussionWillBeSaved(DiscussionWillBeSaved $event)
+    public function whenSaving(Saving $event)
     {
         $discussion = $event->discussion;
 

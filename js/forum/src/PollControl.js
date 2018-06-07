@@ -14,7 +14,7 @@ export default function () {
             if (!poll.isEnded()) {
                 items.add('editPoll', [
                     m(Button, {
-                        icon: 'check-square',
+                        icon: 'fa fa-check-square',
                         className: 'reflar-PollButton',
                         onclick: () => {
                             app.modal.show(new EditPollModal({post: post, poll: poll}));
@@ -25,7 +25,7 @@ export default function () {
 
             items.add('removePoll', [
                 m(Button, {
-                    icon: 'trash',
+                    icon: 'fa fa-trash',
                     className: 'reflar-PollButton',
                     onclick: () => {
 

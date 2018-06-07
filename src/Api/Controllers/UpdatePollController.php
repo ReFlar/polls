@@ -12,15 +12,15 @@
 
 namespace Reflar\Polls\Api\Controllers;
 
-use Flarum\Api\Controller\AbstractResourceController;
-use Flarum\Core\Exception\PermissionDeniedException;
+use Flarum\Api\Controller\AbstractShowController;
+use Flarum\User\Exception\PermissionDeniedException;
 use Psr\Http\Message\ServerRequestInterface;
 use Reflar\Polls\Api\Serializers\QuestionSerializer;
 use Reflar\Polls\Question;
 use Reflar\Polls\Repositories\QuestionRepository;
 use Tobscure\JsonApi\Document;
 
-class UpdatePollController extends AbstractResourceController
+class UpdatePollController extends AbstractShowController
 {
     public $serializer = QuestionSerializer::class;
 
