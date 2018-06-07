@@ -12,8 +12,8 @@
 
 namespace Reflar\Polls\Listeners;
 
-use Flarum\Api\Serializer\ForumSerializer;
 use Flarum\Api\Event\WillGetData;
+use Flarum\Api\Serializer\ForumSerializer;
 use Flarum\Event\GetApiRelationship;
 use Illuminate\Contracts\Events\Dispatcher;
 use Reflar\Polls\Api\Serializers\QuestionSerializer;

@@ -13,13 +13,13 @@
 namespace Reflar\Polls\Listeners;
 
 use Flarum\Api\Controller;
+use Flarum\Api\Event\Serializing;
+use Flarum\Api\Event\WillGetData;
 use Flarum\Api\Serializer\DiscussionSerializer;
 use Flarum\Api\Serializer\UserSerializer;
 use Flarum\Discussion\Discussion;
-use Flarum\Api\Event\WillGetData;
 use Flarum\Event\GetApiRelationship;
 use Flarum\Event\GetModelRelationship;
-use Flarum\Api\Event\Serializing;
 use Illuminate\Contracts\Events\Dispatcher;
 use Reflar\Polls\Api\Serializers\QuestionSerializer;
 use Reflar\Polls\Question;

@@ -13,8 +13,8 @@
 namespace Reflar\Polls;
 
 use DateTime;
-use Flarum\Discussion\Discussion;
 use Flarum\Database\AbstractModel;
+use Flarum\Discussion\Discussion;
 
 class Question extends AbstractModel
 {
