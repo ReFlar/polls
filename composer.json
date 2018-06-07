@@ -23,7 +23,7 @@
         "source": "https://github.com/ReFlar/polls"
     },
     "require": {
-        "flarum/core": "^0.1.0-beta.7"
+        "flarum/core": "^0.1.0-beta.8"
     },
     "extra": {
         "flarum-extension": {
