@@ -2,7 +2,7 @@ import {extend} from 'flarum/extend';
 
 import PostControls from 'flarum/utils/PostControls';
 import Button from 'flarum/components/Button';
-import EditPollModal from 'reflar/polls/components/EditPollModal';
+import EditPollModal from './components/EditPollModal';
 
 export default function () {
     extend(PostControls, 'moderationControls', function (items, post) {

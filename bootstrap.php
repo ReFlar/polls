@@ -17,13 +17,12 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Reflar\Polls\Api\Controllers;
 
 return [
-    (new Extend\Assets('admin'))
-        ->asset(__DIR__.'/js/admin/dist/extension.js')
-        ->bootstrapper('reflar/polls/main'),
-    (new Extend\Assets('forum'))
-        ->asset(__DIR__.'/js/forum/dist/extension.js')
-        ->asset(__DIR__.'/resources/less/forum.less')
-        ->bootstrapper('reflar/polls/main'),
+    (new Extend\Frontend('admin'))
+        ->js(__DIR__.'/js/dist/admin.js'),
+    (new Extend\Frontend('forum'))
+        ->js(__DIR__.'/js/dist/forum.js')
+        ->css(__DIR__.'/css/forum/dist/DateTimePicker.min.css')
+        ->css(__DIR__.'/resources/less/forum.less'),
     new Extend\Locales(__DIR__.'/resources/locale'),
     (new Extend\Routes('api'))
         ->get('/votes', 'votes.index', Controllers\ListVotesController::class)
