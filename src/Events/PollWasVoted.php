@@ -36,15 +36,22 @@ class PollWasVoted
     public $poll;
 
     /**
+     * @var Boolean
+     */
+    public $changed;
+
+    /**
      * PollWasVoted constructor.
      * @param Vote $vote
      * @param Question $poll
      * @param User $actor
+     * @param Boolean $changed
      */
-    public function __construct(Vote $vote, Question $poll, User $actor)
+    public function __construct(Vote $vote, Question $poll, User $actor, $changed = false)
     {
         $this->vote = $vote;
         $this->poll = $poll;
         $this->actor = $actor;
+        $this->changed = $changed;
     }
 }

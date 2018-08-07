@@ -67,7 +67,7 @@ class UpdateVoteController extends AbstractShowController
 
         $vote->save();
 
-        app()->make('events')->fire(new PollWasVoted($vote, $question, $actor));
+        app()->make('events')->fire(new PollWasVoted($vote, $question, $actor, true));
 
         return $vote;
     }
