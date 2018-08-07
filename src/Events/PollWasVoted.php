@@ -1,7 +1,6 @@
 <?php
 /**
- *
- *  This file is part of reflar/gamification-pro
+ *  This file is part of reflar/gamification-pro.
  *
  *  Copyright (c) ReFlar.
  *
@@ -9,7 +8,6 @@
  *
  *  For the full copyright and license information, please view the license.md
  *  file that was distributed with this source code.
- *
  */
 
 namespace Reflar\Polls\Events;
@@ -36,16 +34,17 @@ class PollWasVoted
     public $poll;
 
     /**
-     * @var Boolean
+     * @var bool
      */
     public $changed;
 
     /**
      * PollWasVoted constructor.
-     * @param Vote $vote
+     *
+     * @param Vote     $vote
      * @param Question $poll
-     * @param User $actor
-     * @param Boolean $changed
+     * @param User     $actor
+     * @param bool     $changed
      */
     public function __construct(Vote $vote, Question $poll, User $actor, $changed = false)
     {

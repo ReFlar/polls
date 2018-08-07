@@ -36,8 +36,9 @@ class SavePollToDatabase
 
     /**
      * SavePollToDatabase constructor.
+     *
      * @param AnswerValidator $validator
-     * @param Dispatcher $events
+     * @param Dispatcher      $events
      */
     public function __construct(AnswerValidator $validator, Dispatcher $events)
     {
