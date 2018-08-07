@@ -35,10 +35,12 @@ class UpdateVoteController extends AbstractShowController
 
     /**
      * @param ServerRequestInterface $request
-     * @param Document $document
-     * @return mixed
+     * @param Document               $document
+     *
      * @throws FloodingException
      * @throws PermissionDeniedException
+     *
+     * @return mixed
      */
     protected function data(ServerRequestInterface $request, Document $document)
     {

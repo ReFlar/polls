@@ -25,9 +25,10 @@ class PollWasCreated
 
     /**
      * PollWasCreated constructor.
+     *
      * @param Discussion $discussion
-     * @param Question $poll
-     * @param User $actor
+     * @param Question   $poll
+     * @param User       $actor
      */
     public function __construct(Discussion $discussion, Question $poll, User $actor)
     {
