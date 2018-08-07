@@ -17,8 +17,10 @@ use Flarum\Api\Controller\AbstractCreateController;
 use Flarum\Post\Exception\FloodingException;
 use Flarum\User\AssertPermissionTrait;
 use Flarum\User\Exception\PermissionDeniedException;
+use Illuminate\Contracts\Events\Dispatcher;
 use Psr\Http\Message\ServerRequestInterface;
 use Reflar\Polls\Api\Serializers\VoteSerializer;
+use Reflar\Polls\Events\PollWasVoted;
 use Reflar\Polls\Question;
 use Reflar\Polls\Vote;
 use Tobscure\JsonApi\Document;
@@ -34,7 +36,7 @@ class CreateVoteController extends AbstractCreateController
 
     /**
      * @param ServerRequestInterface $request
-     * @param Document               $document
+     * @param Document $document
      *
      * @throws FloodingException
      * @throws PermissionDeniedException
@@ -49,7 +51,9 @@ class CreateVoteController extends AbstractCreateController
 
         $this->assertNotFlooding($actor);
 
-        if (Question::find($attributes['poll_id'])->isEnded()) {
+        $question = Question::find($attributes['poll_id']);
+
+        if ($question->isEnded()) {
             throw new PermissionDeniedException();
         }
 
@@ -61,6 +65,8 @@ class CreateVoteController extends AbstractCreateController
         $actor->save();
 
         $vote->save();
+
+        app()->make('events')->fire(new PollWasVoted($vote, $question, $actor));
 
         return $vote;
     }

@@ -19,6 +19,7 @@ use Flarum\User\AssertPermissionTrait;
 use Flarum\User\Exception\PermissionDeniedException;
 use Psr\Http\Message\ServerRequestInterface;
 use Reflar\Polls\Api\Serializers\VoteSerializer;
+use Reflar\Polls\Events\PollWasVoted;
 use Reflar\Polls\Question;
 use Reflar\Polls\Vote;
 use Tobscure\JsonApi\Document;
@@ -34,12 +35,10 @@ class UpdateVoteController extends AbstractShowController
 
     /**
      * @param ServerRequestInterface $request
-     * @param Document               $document
-     *
+     * @param Document $document
+     * @return mixed
      * @throws FloodingException
      * @throws PermissionDeniedException
-     *
-     * @return mixed|static
      */
     protected function data(ServerRequestInterface $request, Document $document)
     {
@@ -49,9 +48,11 @@ class UpdateVoteController extends AbstractShowController
 
         $this->assertCan($actor, 'votePolls');
 
-        // $this->assertNotFlooding($actor);
+        $question = Question::find($attributes['poll_id']);
 
-        if (Question::find($attributes['poll_id'])->isEnded()) {
+        $this->assertNotFlooding($actor);
+
+        if ($question->isEnded()) {
             throw new PermissionDeniedException();
         }
 
@@ -65,6 +66,8 @@ class UpdateVoteController extends AbstractShowController
         $actor->save();
 
         $vote->save();
+
+        app()->make('events')->fire(new PollWasVoted($vote, $question, $actor));
 
         return $vote;
     }

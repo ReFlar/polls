@@ -16,6 +16,7 @@ use Flarum\Discussion\Event\Saving;
 use Flarum\User\AssertPermissionTrait;
 use Illuminate\Contracts\Events\Dispatcher;
 use Reflar\Polls\Answer;
+use Reflar\Polls\Events\PollWasCreated;
 use Reflar\Polls\Question;
 use Reflar\Polls\Validators\AnswerValidator;
 
@@ -29,13 +30,19 @@ class SavePollToDatabase
     protected $validator;
 
     /**
-     * SavePollToDatabase constructor.
-     *
-     * @param AnswerValidator $validator
+     * @var Dispatcher
      */
-    public function __construct(AnswerValidator $validator)
+    protected $Dispatcher;
+
+    /**
+     * SavePollToDatabase constructor.
+     * @param AnswerValidator $validator
+     * @param Dispatcher $events
+     */
+    public function __construct(AnswerValidator $validator, Dispatcher $events)
     {
         $this->validator = $validator;
+        $this->events = $events;
     }
 
     /**
@@ -73,6 +80,10 @@ class SavePollToDatabase
                     // Add question to database
                     $poll = Question::build($attributes['question'], $discussion->id, $event->actor->id, $endDate, $attributes['publicPoll']);
                     $poll->save();
+
+                    $this->events->fire(
+                        new PollWasCreated($discussion, $poll, $event->actor)
+                    );
 
                     // Add answers to database
                     foreach (array_filter($attributes['answers']) as $answer) {
