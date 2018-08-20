@@ -15,7 +15,7 @@ reflar-polls:
     modal:
       submit: soumettre
       no_voters: Pas de vote
-      switch: Permettre aux gens de voir qui a votéClick to see the voters
+      switch: Permettre aux gens de voir qui a voté
       min: Vous devez inclure un minimum de 2 réponses
       max: Vous pouvez avoir un maximum de 10 réponses
       include_question: Vous devez inclure une question
