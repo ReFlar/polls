@@ -27,6 +27,8 @@ app.initializers.add('reflar-polls', app => {
     User.prototype.canStartPolls = Model.attribute('canStartPolls');
     User.prototype.canSelfEditPolls = Model.attribute('canSelfEditPolls');
     User.prototype.canVote = Model.attribute('canVote');
+	
+	console.log('hello')
 
     DiscussionComposer.prototype.addPoll = function(data) {
         app.modal.show(new PollModal(data));
