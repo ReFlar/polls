@@ -4,7 +4,7 @@
  *
  * Copyright (c) ReFlar.
  *
- * http://reflar.io
+ * https://reflar.redevs.org
  *
  * For the full copyright and license information, please view the license.md
  * file that was distributed with this source code.
@@ -21,20 +21,20 @@ return [
         ->js(__DIR__.'/js/dist/admin.js'),
     (new Extend\Frontend('forum'))
         ->js(__DIR__.'/js/dist/forum.js')
-        ->css(__DIR__.'/css/forum/dist/DateTimePicker.min.css')
-        ->css(__DIR__.'/resources/less/forum.less'),
+        ->css(__DIR__.'/resources/less/forum.less')
+        ->css(__DIR__.'/resources/css/dist/DateTimePicker.min.css'),
     new Extend\Locales(__DIR__.'/resources/locale'),
     (new Extend\Routes('api'))
-        ->get('/votes', 'votes.index', Controllers\ListVotesController::class)
-        ->post('/votes', 'votes.create', Controllers\CreateVoteController::class)
-        ->post('/answers', 'answers.create', Controllers\CreateAnswerController::class)
-        ->get('/questions', 'questions.index', Controllers\ListPollController::class)
-        ->patch('/questions/{id}', 'poll.update', Controllers\UpdatePollController::class)
-        ->patch('/votes/{id}', 'votes.update', Controllers\UpdateVoteController::class)
-        ->patch('/endDate/{id}', 'endDate.update', Controllers\UpdateEndDateController::class)
-        ->patch('/answers/{id}', 'answers.update', Controllers\UpdateAnswerController::class)
-        ->delete('/questions/{id}', 'poll.delete', Controllers\DeletePollController::class)
-        ->delete('/answers/{id}', 'answer.delete', Controllers\DeleteAnswerController::class),
+        ->get('/reflar/polls', 'polls.index', Controllers\ListPollController::class)
+        ->patch('/reflar/polls/{id}', 'polls.update', Controllers\UpdatePollController::class)
+        ->patch('/reflar/polls/{id}/endDate', 'polls.endDate.update', Controllers\UpdateEndDateController::class)
+        ->delete('/reflar/polls/{id}', 'polls.delete', Controllers\DeletePollController::class)
+        ->get('/reflar/polls/votes', 'polls.votes.index', Controllers\ListVotesController::class)
+        ->post('/reflar/polls/votes', 'polls.votes.create', Controllers\CreateVoteController::class)
+        ->patch('/reflar/polls/votes/{id}', 'polls.votes.update', Controllers\UpdateVoteController::class)
+        ->post('/reflar/polls/answers', 'polls.answers.create', Controllers\CreateAnswerController::class)
+        ->patch('/reflar/polls/answers/{id}', 'polls.answers.update', Controllers\UpdateAnswerController::class)
+        ->delete('/reflar/polls/answers/{id}', 'polls.answers.delete', Controllers\DeleteAnswerController::class),
     function (Dispatcher $events) {
         $events->subscribe(Listeners\AddDiscussionPollRelationship::class);
         $events->subscribe(Listeners\AddForumFieldRelationship::class);

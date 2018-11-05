@@ -56,10 +56,11 @@ export default class EditPollModal extends Modal {
             dateTimeFormat: "yyyy-MM-dd HH:mm",
             minDateTime: this.getDateTime(),
             settingValueOfElement: (value) => {
-                this.endDate(value)
+                this.endDate(value);
+
                 app.request({
                     method: 'PATCH',
-                    url: app.forum.attribute('apiUrl') + '/endDate/' + this.props.poll.id(),
+                    url: `${app.forum.attribute('apiUrl')}/reflar/polls/${this.props.poll.id()}/endDate`,
                     data: {
                         date: new Date(value),
                         user_id: this.pollCreator.id()
@@ -171,7 +172,7 @@ export default class EditPollModal extends Modal {
     removeOption(option) {
         app.request({
             method: 'DELETE',
-            url: app.forum.attribute('apiUrl') + '/answers/' + option.data.id,
+            url: `${app.forum.attribute('apiUrl')}/reflar/polls/answers/${option.data.id}`,
             data: this.pollCreator.id()
         });
         this.answers.some((answer, i) => {
@@ -185,7 +186,7 @@ export default class EditPollModal extends Modal {
     updateAnswer(answerToUpdate, value) {
         app.request({
             method: 'PATCH',
-            url: app.forum.attribute('apiUrl') + '/answers/' + answerToUpdate.data.id,
+            url: `${app.forum.attribute('apiUrl')}/reflar/polls/answers/${answerToUpdate.data.id}`,
             data: {
                 answer: value,
                 user_id: this.pollCreator.id()
@@ -207,7 +208,7 @@ export default class EditPollModal extends Modal {
         }
         app.request({
             method: 'PATCH',
-            url: app.forum.attribute('apiUrl') + '/questions/' + this.props.poll.id(),
+            url: `${app.forum.attribute('apiUrl')}/reflar/polls/${this.props.poll.id()}`,
             data: {
                 question: question,
                 user_id: this.pollCreator.id()

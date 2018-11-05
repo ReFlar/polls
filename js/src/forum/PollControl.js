@@ -31,7 +31,7 @@ export default function () {
 
                         if (confirm(app.translator.trans('reflar-polls.forum.moderation.delete_confirm'))) {
                             app.request({
-                                url: app.forum.attribute('apiUrl') + '/questions/' + poll.id(),
+                                url: `${app.forum.attribute('apiUrl')}/reflar/polls/${poll.id()}`,
                                 method: 'DELETE',
                                 data: poll.store.data.users[Object.keys(poll.store.data.users)[0]].id()
                             }).then(() => {
