@@ -1,0 +1,39 @@
+reflar-polls:
+  admin:
+    permissions:
+      moderate: Editar y eliminar encuestas
+      start: Comenzar una encuesta
+      vote: Votar en encuestas
+      self_edit: Permite que usuarios editen sus encuestas
+  forum:
+    no_permission: No tienes permiso para votar
+    poll_ended: Esta encuesta ha finalizado
+    days_remaining: "La encuesta termina en {time}"
+    public_poll: Ver votantes
+    votes_modal:
+      title: Votantes
+    modal:
+      submit: Enviar
+      no_voters: No hay votos
+      switch: Permitir ver quienes han votado
+      min: Debes incluir un mínimo de 2 preguntas
+      max: Puedes tener hasta un máximo de 10 preguntas
+      include_question: Debes incluir una pregunta
+      date_placeholder: Fecha de término de la encuesta (Opcional)
+      answer_placeholder: Respuesta
+      add: Agregar una opción
+      question_placeholder: Pregunta
+      add_title: Agregar una encuesta
+      edit_title: Editar encuesta
+      answers: Respuestas
+    moderation:
+      edit: Editar encuesta
+      delete: Eliminar encuesta
+      delete_confirm: ¿Realmente deseas eliminar esta encuesta?
+    composer_discussion:
+      add_poll: Agregar encuesta
+      edit: => reflar-polls.forum.moderation.edit
+    tooltip:
+      votes: votos
+      vote: voto
+      badge: Encuesta
