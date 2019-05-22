@@ -2,38 +2,38 @@ reflar-polls:
   admin:
     permissions:
       moderate: Upravit a odebrat ankety
-      start: Vytvo¯it anketu
-      vote: Hlasovat v anketÏ
-      self_edit: Povolit uûivatel˘m upravit jejich vlastnÌ ankety
+      self_edit: Povolit u≈æivatel√πm upravit jejich vlastn√≠ ankety
+      start: Vytvo√∏it anketu
+      vote: Hlasovat v anket√¨
   forum:
-    no_permission: Nem·te opr·vnÏnÌ pro hlasov·nÌ
-    poll_ended: Tato anketa byla uzav¯ena
-    days_remaining: "Anketa vypröÌ {time}"
-    public_poll: Zobrazit hlasujÌcÌ
-    votes_modal:
-      title: Hlasov·nÌ
-    modal:
-      submit: Odeslat
-      no_voters: é·dnÈ hlasy
-      switch: Povolit uûivatel˘m vidÏt kdo hlasoval
-      min: Zadejte nejmÈnÏ 2 odpovÏdi
-      max: Zadat lze maxim·lnÏ 10 odpovÏdÌ
-      include_question: Zadejte ot·zku
-      date_placeholder: Datum uzav¯enÌ ankety (volitelnÈ)
-      answer_placeholder: OdpovÏÔ
-      add: P¯idat volbu
-      question_placeholder: Ot·zka
-      add_title: P¯idat anketu
-      edit_title: Upravit anketu
-      answers: OdpovÏdi
-    moderation:
-      edit: ⁄prava ankety
-      delete: Odebrat anketu
-      delete_confirm: Opravdu si p¯ejete odstranit tuto anketu?
     composer_discussion:
-      add_poll: P¯idat anketu
+      add_poll: P√∏idat anketu
       edit: => reflar-polls.forum.moderation.edit
+    days_remaining: 'Anketa vypr≈°√≠ {time}'
+    modal:
+      add: P√∏idat volbu
+      add_title: P√∏idat anketu
+      answer_placeholder: Odpov√¨√Ø
+      answers: Odpov√¨di
+      date_placeholder: Datum uzav√∏en√≠ ankety (voliteln√©)
+      edit_title: Upravit anketu
+      include_question: Zadejte ot√°zku
+      max: Zadat lze maxim√°ln√¨ 10 odpov√¨d√≠
+      min: Zadejte nejm√©n√¨ 2 odpov√¨di
+      no_voters: ≈Ω√°dn√© hlasy
+      question_placeholder: Ot√°zka
+      submit: Odeslat
+      switch: Povolit u≈æivatel√πm vid√¨t kdo hlasoval
+    moderation:
+      delete: Odebrat anketu
+      delete_confirm: Opravdu si p√∏ejete odstranit tuto anketu?
+      edit: √öprava ankety
+    no_permission: Nem√°te opr√°vn√¨n√≠ pro hlasov√°n√≠
+    poll_ended: Tato anketa byla uzav√∏ena
+    public_poll: Zobrazit hlasuj√≠c√≠
     tooltip:
-      votes: hlas˘
-      vote: hlas
       badge: Anketa
+      vote: hlas
+      votes: hlas√π
+    votes_modal:
+      title: Hlasov√°n√≠
