@@ -2,38 +2,38 @@ reflar-polls:
   admin:
     permissions:
       moderate: Edit & remove polls
+      self_edit: Allow users to edit their own polls
       start: Start a poll
       vote: Vote on polls
-      self_edit: Allow users to edit their own polls
   forum:
-    no_permission: You don't have permission to vote
-    poll_ended: This poll has ended
-    days_remaining: "Poll ends {time}"
-    public_poll: View voters
-    votes_modal:
-      title: Voters
-    modal:
-      submit: Submit
-      no_voters: No Votes
-      switch: Allow people to see who voted
-      min: You must include a minimum of 2 answers
-      max: You can have a maximum of 10 answers
-      include_question: You must include a question
-      date_placeholder: Poll end date (Optional)
-      answer_placeholder: Answer
-      add: Add an Option
-      question_placeholder: Question
-      add_title: Add a Poll
-      edit_title: Edit Poll
-      answers: Answers
-    moderation:
-      edit: Edit Poll
-      delete: Remove Poll
-      delete_confirm: Are you sure you want to delete this poll?
     composer_discussion:
       add_poll: Add Poll
       edit: => reflar-polls.forum.moderation.edit
+    days_remaining: 'Poll ends {time}'
+    modal:
+      add: Add an Option
+      add_title: Add a Poll
+      answer_placeholder: Answer
+      answers: Answers
+      date_placeholder: Poll end date (Optional)
+      edit_title: Edit Poll
+      include_question: You must include a question
+      max: You can have a maximum of 10 answers
+      min: You must include a minimum of 2 answers
+      no_voters: No Votes
+      question_placeholder: Question
+      submit: Submit
+      switch: Allow people to see who voted
+    moderation:
+      delete: Remove Poll
+      delete_confirm: Are you sure you want to delete this poll?
+      edit: Edit Poll
+    no_permission: You don't have permission to vote
+    poll_ended: This poll has ended
+    public_poll: View voters
     tooltip:
-      votes: votes
-      vote: vote
       badge: Poll
+      vote: vote
+      votes: votes
+    votes_modal:
+      title: Voters
